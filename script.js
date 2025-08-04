@@ -10,14 +10,8 @@
         count: 25,
         maxOpacity: 0.7,
         minOpacity: 0.3,
-        speed: {
-            min: 0.5,
-            max: 2
-        },
-        size: {
-            min: 2,
-            max: 4
-        }
+        speed: { min: 0.5, max: 2 },
+        size: { min: 2, max: 4 }
     };
 
     const utils = {
@@ -58,6 +52,14 @@
                 rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
                 rect.right <= (window.innerWidth || document.documentElement.clientWidth)
             );
+        },
+
+        isMobile: function() {
+            return window.innerWidth <= 768;
+        },
+
+        isTablet: function() {
+            return window.innerWidth > 768 && window.innerWidth <= 1024;
         }
     };
 
@@ -102,14 +104,15 @@
             particleContainer = document.getElementById('particles');
             if (!particleContainer) return;
 
-            this.createParticles();
+            const particleCount = utils.isMobile() ? 15 : PARTICLE_CONFIG.count;
+            this.createParticles(particleCount);
             this.startAnimation();
         },
 
-        createParticles: function() {
+        createParticles: function(count = PARTICLE_CONFIG.count) {
             const fragment = document.createDocumentFragment();
             
-            for (let i = 0; i < PARTICLE_CONFIG.count; i++) {
+            for (let i = 0; i < count; i++) {
                 const particleElement = document.createElement('div');
                 particleElement.className = 'particle';
                 
@@ -175,7 +178,8 @@
             const targetElement = document.querySelector(targetId);
             
             if (targetElement) {
-                const headerHeight = document.querySelector('header').offsetHeight;
+                const header = document.querySelector('header');
+                const headerHeight = header ? header.offsetHeight : 0;
                 const targetPosition = targetElement.offsetTop - headerHeight - 20;
                 
                 window.scrollTo({
@@ -197,7 +201,7 @@
 
         setupIntersectionObserver: function() {
             const options = {
-                threshold: 0.1,
+                threshold: utils.isMobile() ? 0.05 : 0.1,
                 rootMargin: '0px 0px -50px 0px'
             };
 
@@ -230,8 +234,12 @@
 
     const HoverEffects = {
         init: function() {
-            this.setupCardHovers();
-            this.setupButtonHovers();
+            if (!utils.isMobile()) {
+                this.setupCardHovers();
+                this.setupButtonHovers();
+            } else {
+                this.setupMobileTouch();
+            }
         },
 
         setupCardHovers: function() {
@@ -270,6 +278,26 @@
         buttonMouseLeave: function(e) {
             const button = e.currentTarget;
             button.style.transform = 'translateY(0) scale(1)';
+        },
+
+        setupMobileTouch: function() {
+            const cards = document.querySelectorAll('.service-card, .product-card');
+            cards.forEach(card => {
+                card.addEventListener('touchstart', this.cardTouchStart.bind(this), { passive: true });
+                card.addEventListener('touchend', this.cardTouchEnd.bind(this), { passive: true });
+            });
+        },
+
+        cardTouchStart: function(e) {
+            const card = e.currentTarget;
+            card.style.transform = 'scale(0.98)';
+        },
+
+        cardTouchEnd: function(e) {
+            const card = e.currentTarget;
+            setTimeout(() => {
+                card.style.transform = 'scale(1)';
+            }, 150);
         }
     };
 
@@ -277,10 +305,13 @@
         init: function() {
             this.createMobileToggle();
             this.setupMobileMenu();
+            this.addMobileStyles();
         },
 
         createMobileToggle: function() {
             const nav = document.querySelector('nav');
+            if (!nav) return;
+
             const toggle = document.createElement('button');
             toggle.className = 'mobile-toggle';
             toggle.innerHTML = '☰';
@@ -289,9 +320,9 @@
             toggle.addEventListener('click', this.toggleMobileMenu.bind(this));
             
             const navMenu = document.querySelector('.nav-menu');
-            nav.insertBefore(toggle, navMenu);
-            
-            this.addMobileStyles();
+            if (navMenu) {
+                nav.insertBefore(toggle, navMenu);
+            }
         },
 
         addMobileStyles: function() {
@@ -307,6 +338,7 @@
                     border-radius: 8px;
                     cursor: pointer;
                     transition: all 0.3s ease;
+                    z-index: 1001;
                 }
                 
                 .mobile-toggle:hover {
@@ -330,10 +362,26 @@
                         transform: translateY(-100vh);
                         transition: transform 0.3s ease;
                         z-index: 999;
+                        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
                     }
                     
                     .nav-menu.active {
                         transform: translateY(0);
+                    }
+
+                    .nav-menu a {
+                        padding: 1rem 0;
+                        border-bottom: 1px solid rgba(139, 195, 74, 0.2);
+                    }
+
+                    .nav-menu a:last-child {
+                        border-bottom: none;
+                    }
+                }
+
+                @media (max-width: 480px) {
+                    .nav-menu {
+                        padding: 1.5rem;
                     }
                 }
             `;
@@ -345,14 +393,27 @@
             navLinks.forEach(link => {
                 link.addEventListener('click', () => {
                     const navMenu = document.querySelector('.nav-menu');
-                    navMenu.classList.remove('active');
+                    if (navMenu) {
+                        navMenu.classList.remove('active');
+                    }
                 });
+            });
+
+            document.addEventListener('click', (e) => {
+                const navMenu = document.querySelector('.nav-menu');
+                const toggle = document.querySelector('.mobile-toggle');
+                
+                if (navMenu && toggle && !navMenu.contains(e.target) && !toggle.contains(e.target)) {
+                    navMenu.classList.remove('active');
+                }
             });
         },
 
         toggleMobileMenu: function() {
             const navMenu = document.querySelector('.nav-menu');
-            navMenu.classList.toggle('active');
+            if (navMenu) {
+                navMenu.classList.toggle('active');
+            }
         }
     };
 
@@ -367,15 +428,18 @@
             const scrollY = window.pageYOffset;
             const header = document.querySelector('header');
             
-            if (scrollY > 100) {
-                header.style.background = 'rgba(45, 75, 35, 0.98)';
-            } else {
-                header.style.background = 'linear-gradient(135deg, rgba(45, 75, 35, 0.95) 0%, rgba(75, 105, 45, 0.95) 50%, rgba(35, 65, 25, 0.95) 100%)';
+            if (header) {
+                if (scrollY > 100) {
+                    header.style.background = 'rgba(45, 75, 35, 0.98)';
+                } else {
+                    header.style.background = 'linear-gradient(135deg, rgba(45, 75, 35, 0.95) 0%, rgba(75, 105, 45, 0.95) 50%, rgba(35, 65, 25, 0.95) 100%)';
+                }
             }
         }, 16),
 
         setupResizeOptimization: utils.debounce(function() {
             ParticleSystem.resize();
+            HoverEffects.init();
         }, 250),
 
         setupVisibilityChange: function() {
@@ -401,56 +465,64 @@
             e.preventDefault();
             const button = e.currentTarget;
             const productCard = button.closest('.product-card');
-            const productName = productCard.querySelector('h3').textContent;
-            const productPrice = productCard.querySelector('.product-price').textContent;
             
-            this.showPurchaseModal(productName, productPrice);
+            if (productCard) {
+                const productName = productCard.querySelector('h3')?.textContent || 'Producto';
+                const productPrice = productCard.querySelector('.product-price')?.textContent || '$0.00';
+                
+                this.showPurchaseModal(productName, productPrice);
+            }
         },
 
         showPurchaseModal: function(name, price) {
-    const modal = document.createElement('div');
-    modal.className = 'purchase-modal';
+            const modal = document.createElement('div');
+            modal.className = 'purchase-modal';
 
-    const qrValue = 'https://imgur.com/a/LehO3sL';
-    const qrURL = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(qrValue)}`;
+            const qrValue = 'https://imgur.com/a/LehO3sL';
+            const qrURL = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(qrValue)}`;
 
-    modal.innerHTML = `
-        <div class="modal-backdrop"></div>
-        <div class="modal-content">
-            <h3>Proceso de Compra</h3>
-            <p>Producto: <strong>${name}</strong></p>
-            <p>Precio: <strong>${price}</strong></p>
-            <div class="qr-section">
-                <p>Escanea este código QR para proceder con tu pago:</p>
-                <img src="${qrURL}" alt="QR de pago" class="qr-image">
-            </div>
-            <p> O contáctanos a través de:</p>
-            <div class="contact-options">
-                <a href="mailto:info@lafil.com" class="contact-btn">📧 Email</a>
-                <a href="tel:+593991387253" class="contact-btn">📱 Teléfono</a>
-            </div>
-            <button class="close-modal">Cerrar</button>
-        </div>
-    `;
+            modal.innerHTML = `
+                <div class="modal-backdrop"></div>
+                <div class="modal-content">
+                    <h3>Proceso de Compra</h3>
+                    <p>Producto: <strong>${name}</strong></p>
+                    <p>Precio: <strong>${price}</strong></p>
+                    <div class="qr-section">
+                        <p>Escanea este código QR para proceder con tu pago:</p>
+                        <img src="${qrURL}" alt="QR de pago" class="qr-image">
+                    </div>
+                    <p>O contáctanos a través de:</p>
+                    <div class="contact-options">
+                        <a href="mailto:info@lafil.com" class="contact-btn">📧 Email</a>
+                        <a href="tel:+593991387253" class="contact-btn">📱 Teléfono</a>
+                    </div>
+                    <button class="close-modal">Cerrar</button>
+                </div>
+            `;
 
-    this.addModalStyles();
+            this.addModalStyles();
 
-    document.body.appendChild(modal);
-    document.body.classList.add('modal-open');
+            document.body.appendChild(modal);
+            document.body.classList.add('modal-open');
 
-    const closeModal = () => {
-        document.body.classList.remove('modal-open');
-        if (document.body.contains(modal)) {
-            document.body.removeChild(modal);
-        }
-    };
+            const closeModal = () => {
+                document.body.classList.remove('modal-open');
+                if (document.body.contains(modal)) {
+                    document.body.removeChild(modal);
+                }
+            };
 
-    modal.querySelector('.close-modal').addEventListener('click', closeModal);
-    modal.querySelector('.modal-backdrop').addEventListener('click', closeModal);
-    modal.querySelector('.modal-content').addEventListener('click', e => e.stopPropagation());
-},
+            modal.querySelector('.close-modal')?.addEventListener('click', closeModal);
+            modal.querySelector('.modal-backdrop')?.addEventListener('click', closeModal);
+            modal.querySelector('.modal-content')?.addEventListener('click', e => e.stopPropagation());
 
-
+            document.addEventListener('keydown', function escapeHandler(e) {
+                if (e.key === 'Escape') {
+                    closeModal();
+                    document.removeEventListener('keydown', escapeHandler);
+                }
+            });
+        },
 
         addModalStyles: function() {
             if (document.querySelector('#modal-styles')) return;
@@ -489,6 +561,8 @@
                     padding: 3rem;
                     max-width: 500px;
                     width: 90%;
+                    max-height: 90vh;
+                    overflow-y: auto;
                     position: relative;
                     z-index: 10001;
                     text-align: center;
@@ -567,10 +641,15 @@
                     }
                 }
                 
-                @media (max-width: 480px) {
+                @media (max-width: 768px) {
                     .modal-content {
                         padding: 2rem;
                         margin: 1rem;
+                        font-size: 0.9rem;
+                    }
+                    
+                    .modal-content h3 {
+                        font-size: 1.5rem;
                     }
                     
                     .contact-options {
@@ -582,32 +661,20 @@
                         width: 200px;
                     }
                 }
+
+                @media (max-width: 480px) {
+                    .modal-content {
+                        padding: 1.5rem;
+                        margin: 0.5rem;
+                    }
+                    
+                    .qr-image {
+                        width: 150px;
+                        height: 150px;
+                    }
+                }
             `;
             document.head.appendChild(style);
-        }
-    };
-
-    const LazyLoader = {
-        init: function() {
-            if ('IntersectionObserver' in window) {
-                this.setupLazyLoading();
-            }
-        },
-
-        setupLazyLoading: function() {
-            const images = document.querySelectorAll('img[data-src]');
-            const imageObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const img = entry.target;
-                        img.src = img.dataset.src;
-                        img.classList.remove('lazy');
-                        imageObserver.unobserve(img);
-                    }
-                });
-            });
-
-            images.forEach(img => imageObserver.observe(img));
         }
     };
 
@@ -628,8 +695,9 @@
                 zIndex: '10000',
                 transform: 'translateX(100%)',
                 transition: 'transform 0.3s ease',
-                maxWidth: '300px',
-                wordWrap: 'break-word'
+                maxWidth: utils.isMobile() ? '280px' : '300px',
+                wordWrap: 'break-word',
+                fontSize: utils.isMobile() ? '0.9rem' : '1rem'
             });
 
             switch(type) {
@@ -672,72 +740,9 @@
         }
     };
 
-    const FormValidator = {
-        validateEmail: function(email) {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return emailRegex.test(email);
-        },
-
-        validatePhone: function(phone) {
-            const phoneRegex = /^[\d\s\-\+\(\)]+$/;
-            return phoneRegex.test(phone) && phone.replace(/\D/g, '').length >= 10;
-        },
-
-        showError: function(input, message) {
-            const errorElement = input.parentNode.querySelector('.error-message');
-            if (errorElement) {
-                errorElement.textContent = message;
-            } else {
-                const error = document.createElement('div');
-                error.className = 'error-message';
-                error.textContent = message;
-                error.style.color = '#f44336';
-                error.style.fontSize = '0.8rem';
-                error.style.marginTop = '0.5rem';
-                input.parentNode.appendChild(error);
-            }
-            input.style.borderColor = '#f44336';
-        },
-
-        clearError: function(input) {
-            const errorElement = input.parentNode.querySelector('.error-message');
-            if (errorElement) {
-                errorElement.remove();
-            }
-            input.style.borderColor = '';
-        }
-    };
-
-    const EventManager = {
-        events: new Map(),
-
-        on: function(element, event, handler, options = {}) {
-            const key = `${element.constructor.name}_${event}_${handler.name}`;
-            if (!this.events.has(key)) {
-                element.addEventListener(event, handler, options);
-                this.events.set(key, { element, event, handler, options });
-            }
-        },
-
-        off: function(element, event, handler) {
-            const key = `${element.constructor.name}_${event}_${handler.name}`;
-            if (this.events.has(key)) {
-                element.removeEventListener(event, handler);
-                this.events.delete(key);
-            }
-        },
-
-        cleanup: function() {
-            this.events.forEach(({ element, event, handler }) => {
-                element.removeEventListener(event, handler);
-            });
-            this.events.clear();
-        }
-    };
-
     function initializeApp() {
-        if (!document.querySelector('header') || !document.querySelector('main')) {
-            console.warn('Elementos principales no encontrados');
+        const requiredElements = document.querySelector('header') && document.querySelector('main');
+        if (!requiredElements) {
             return;
         }
 
@@ -748,7 +753,6 @@
             HoverEffects.init();
             MobileNavigation.init();
             PurchaseSystem.init();
-            LazyLoader.init();
             PerformanceOptimizer.init();
 
             window.addEventListener('scroll', PerformanceOptimizer.setupScrollOptimization, { passive: true });
@@ -758,17 +762,13 @@
                 NotificationSystem.show('¡Bienvenido! Explora nuestros productos.', 'success', 4000);
             }, 1500);
 
-            console.log('🚀 La Fil - Aplicación inicializada correctamente');
-
         } catch (error) {
-            console.error('Error durante la inicialización:', error);
             NotificationSystem.show('Hubo un error al cargar la página. Por favor, recarga.', 'error');
         }
     }
 
     function cleanup() {
         ParticleSystem.pauseAnimation();
-        EventManager.cleanup();
         if (animationFrame) {
             cancelAnimationFrame(animationFrame);
         }
@@ -782,21 +782,11 @@
 
     window.addEventListener('beforeunload', cleanup);
 
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-        window.LaFilDebug = {
-            ParticleSystem,
-            NotificationSystem,
-            utils
-        };
-    }
-
     window.addEventListener('error', function(e) {
-        console.error('Error global capturado:', e.error);
         NotificationSystem.show('Se produjo un error inesperado.', 'error');
     });
 
     window.addEventListener('unhandledrejection', function(e) {
-        console.warn('Promise rechazada:', e.reason);
         e.preventDefault();
     });
 
