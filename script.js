@@ -456,9 +456,11 @@
     const PurchaseSystem = {
         init: function() {
             const buyButtons = document.querySelectorAll('.buy-button');
-            buyButtons.forEach(button => {
-                button.addEventListener('click', this.handlePurchase.bind(this));
-            });
+                buyButtons.forEach(button => {
+                    if (button.classList.contains('no-modal')) return;
+                    button.addEventListener('click', this.handlePurchase.bind(this));
+                });
+
         },
 
         handlePurchase: function(e) {
@@ -472,6 +474,8 @@
                 
                 this.showPurchaseModal(productName, productPrice);
             }
+
+            
         },
 
         showPurchaseModal: function(name, price) {
