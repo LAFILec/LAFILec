@@ -696,6 +696,31 @@ main {
     left: 100%;
 }
 
+.buy-button {
+    display: inline-block; 
+    text-decoration: none; 
+    text-align: center;     
+    margin: 0 auto;         
+    padding: 0.8rem 1.5rem;
+    background-color: #8bc34a;
+    color: #0d1f0d;
+    border-radius: 20px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(139, 195, 74, 0.4);
+}
+
+.buy-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(139, 195, 74, 0.5);
+}
+
+.product-info {
+    text-align: center;
+}
+
+
 .about {
     background: linear-gradient(145deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.06));
     backdrop-filter: blur(25px);
