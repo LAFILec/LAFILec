@@ -479,55 +479,73 @@
         },
 
         showPurchaseModal: function(name, price) {
-            const modal = document.createElement('div');
-            modal.className = 'purchase-modal';
+    const modal = document.createElement('div');
+    modal.className = 'purchase-modal';
+    const priceValue = parseFloat(price.replace('$', '')) || 0;
 
-            const qrValue = 'https://imgur.com/a/LehO3sL';
-            const qrURL = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(qrValue)}`;
+    const qrValue = 'https://imgur.com/a/LehO3sL';
+    const qrURL = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(qrValue)}`;
 
-            modal.innerHTML = `
-                <div class="modal-backdrop"></div>
-                <div class="modal-content">
-                    <h3>Proceso de Compra</h3>
-                    <p>Producto: <strong>${name}</strong></p>
-                    <p>Precio: <strong>${price}</strong></p>
-                    <div class="qr-section">
-                        <p>Escanea este código QR para proceder con tu pago:</p>
-                        <img src="${qrURL}" alt="QR de pago" class="qr-image">
-                    </div>
-                    <p>O contáctanos a través de:</p>
-                    <div class="contact-options">
-                        <a href="mailto:info@lafil.com" class="contact-btn">📧 Email</a>
-                        <a href="tel:+593991387253" class="contact-btn">📱 Teléfono</a>
-                    </div>
-                    <button class="close-modal">Cerrar</button>
-                </div>
-            `;
+    modal.innerHTML = `
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+            <h3>Proceso de Compra</h3>
+            <p>Producto: <strong>${name}</strong></p>
+            <p>Precio unitario: <strong>$${priceValue.toFixed(2)}</strong></p>
+            
+            <div class="quantity-section">
+                <label for="quantity">Cantidad:</label>
+                <input type="number" id="quantity" name="quantity" min="1" value="1" style="width: 60px; margin-left: 10px;">
+            </div>
 
-            this.addModalStyles();
+            <p>Total: <strong id="total-price">$${priceValue.toFixed(2)}</strong></p>
 
-            document.body.appendChild(modal);
-            document.body.classList.add('modal-open');
+            <div class="qr-section">
+                <p>Escanea este código QR para proceder con tu pago:</p>
+                <img src="${qrURL}" alt="QR de pago" class="qr-image">
+            </div>
 
-            const closeModal = () => {
-                document.body.classList.remove('modal-open');
-                if (document.body.contains(modal)) {
-                    document.body.removeChild(modal);
-                }
-            };
+            <p>O contáctanos a través de:</p>
+            <div class="contact-options">
+                <a href="mailto:info@lafil.com" class="contact-btn">📧 Email</a>
+                <a href="tel:+593991387253" class="contact-btn">📱 Teléfono</a>
+            </div>
+            <button class="close-modal">Cerrar</button>
+        </div>
+    `;
 
-            modal.querySelector('.close-modal')?.addEventListener('click', closeModal);
-            modal.querySelector('.modal-backdrop')?.addEventListener('click', closeModal);
-            modal.querySelector('.modal-content')?.addEventListener('click', e => e.stopPropagation());
+    this.addModalStyles();
 
-            document.addEventListener('keydown', function escapeHandler(e) {
-                if (e.key === 'Escape') {
-                    closeModal();
-                    document.removeEventListener('keydown', escapeHandler);
-                }
-            });
-        },
+    document.body.appendChild(modal);
+    document.body.classList.add('modal-open');
 
+    const quantityInput = modal.querySelector('#quantity');
+    const totalPrice = modal.querySelector('#total-price');
+
+    quantityInput.addEventListener('input', () => {
+        const qty = parseInt(quantityInput.value) || 1;
+        const total = priceValue * qty;
+        totalPrice.textContent = `$${total.toFixed(2)}`;
+    });
+
+    const closeModal = () => {
+        document.body.classList.remove('modal-open');
+        if (document.body.contains(modal)) {
+            document.body.removeChild(modal);
+        }
+    };
+
+    modal.querySelector('.close-modal')?.addEventListener('click', closeModal);
+    modal.querySelector('.modal-backdrop')?.addEventListener('click', closeModal);
+    modal.querySelector('.modal-content')?.addEventListener('click', e => e.stopPropagation());
+
+    document.addEventListener('keydown', function escapeHandler(e) {
+        if (e.key === 'Escape') {
+            closeModal();
+            document.removeEventListener('keydown', escapeHandler);
+        }
+    });
+},
         addModalStyles: function() {
             if (document.querySelector('#modal-styles')) return;
             
