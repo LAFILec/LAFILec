@@ -9,8 +9,7 @@
     const FRAME_TIME = 1000 / FPS_LIMIT;
 
     const config = {
-        particleCount: window.innerWidth < 768 ? 12 : 20,
-        maxParticles: 25
+        particleCount: window.innerWidth < 768 ? 8 : 15
     };
 
     function random(min, max) {
@@ -21,41 +20,29 @@
         return window.innerWidth <= 768;
     }
 
-    function throttle(func, delay) {
-        let timeoutId;
-        let lastExecTime = 0;
-        return function (...args) {
-            const currentTime = Date.now();
-            if (currentTime - lastExecTime > delay) {
-                func.apply(this, args);
-                lastExecTime = currentTime;
-            } else {
-                clearTimeout(timeoutId);
-                timeoutId = setTimeout(() => {
-                    func.apply(this, args);
-                    lastExecTime = Date.now();
-                }, delay - (currentTime - lastExecTime));
-            }
-        };
-    }
-
-    class Particle {
+    class LokiParticle {
         constructor() {
             this.reset();
             this.y = random(0, window.innerHeight);
+            this.hueShift = random(0, 360);
+            this.pulsePhase = random(0, Math.PI * 2);
         }
 
         reset() {
             this.x = random(-20, window.innerWidth + 20);
             this.y = window.innerHeight + 20;
             this.speed = random(0.8, 2.2);
-            this.size = random(2, 4);
-            this.opacity = random(0.4, 0.8);
-            this.hue = random(45, 65); 
+            this.size = random(1.5, 3);
+            this.opacity = random(0.3, 0.7);
+            this.hue = random(45, 65);
+            this.shimmer = random(0.1, 0.3);
         }
 
         update() {
             this.y -= this.speed;
+            this.hueShift += 0.5;
+            this.pulsePhase += 0.02;
+            
             if (this.y < -30) {
                 this.reset();
             }
@@ -63,11 +50,27 @@
 
         draw(ctx) {
             ctx.save();
-            ctx.globalAlpha = this.opacity;
-            ctx.fillStyle = `hsl(${this.hue}, 80%, 65%)`; 
-            ctx.shadowBlur = 8;
-            ctx.shadowColor = `hsl(${this.hue}, 100%, 75%)`;
-            ctx.fillRect(this.x - this.size/2, this.y - this.size/2, this.size, this.size);
+            
+            const pulse = Math.sin(this.pulsePhase) * 0.3 + 0.7;
+            const currentOpacity = this.opacity * pulse;
+            const currentSize = this.size * (0.8 + pulse * 0.4);
+            const currentHue = (this.hue + Math.sin(this.hueShift * 0.01) * 15) % 360;
+            
+            ctx.globalAlpha = currentOpacity;
+            ctx.fillStyle = `hsl(${currentHue}, 80%, 65%)`;
+            ctx.shadowBlur = 6;
+            ctx.shadowColor = `hsl(${currentHue}, 90%, 75%)`;
+            
+            const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, currentSize);
+            gradient.addColorStop(0, `hsl(${currentHue}, 80%, 75%)`);
+            gradient.addColorStop(0.7, `hsl(${currentHue}, 70%, 60%)`);
+            gradient.addColorStop(1, `hsla(${currentHue}, 60%, 50%, 0)`);
+            
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, currentSize, 0, Math.PI * 2);
+            ctx.fill();
+            
             ctx.restore();
         }
     }
@@ -87,25 +90,24 @@
         `;
         document.body.appendChild(canvas);
 
-        const ctx = canvas.getContext('2d', { alpha: true });
-        ctx.imageSmoothingEnabled = true;
+        const ctx = canvas.getContext('2d', { alpha: true, desynchronized: true });
         
         function resize() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            const newCount = window.innerWidth < 768 ? 12 : 20;
+            const newCount = window.innerWidth < 768 ? 8 : 15;
             if (particles.length !== newCount) {
                 particles.length = 0;
                 for (let i = 0; i < newCount; i++) {
-                    particles.push(new Particle());
+                    particles.push(new LokiParticle());
                 }
             }
         }
         resize();
-        window.addEventListener('resize', throttle(resize, 250));
+        window.addEventListener('resize', resize);
 
         for (let i = 0; i < config.particleCount; i++) {
-            particles.push(new Particle());
+            particles.push(new LokiParticle());
         }
 
         function animate(currentTime) {
@@ -119,82 +121,96 @@
                         particle.draw(ctx);
                     }
                 }
-
                 lastTime = currentTime;
             }
-            
             animationId = requestAnimationFrame(animate);
         }
-        
         animate(0);
     }
 
-    function initNavigation() {
-        const navLinks = document.querySelectorAll('a[href^="#"]');
-        navLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                const target = document.querySelector(targetId);
-                
-                if (target) {
-                    const header = document.querySelector('header');
-                    const offset = header ? header.offsetHeight + 20 : 20;
-                    const targetPosition = target.offsetTop - offset;
-                    
-                    window.scrollTo({
-                        top: targetPosition,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-
+    function closeMenuMobile() {
         const toggle = document.querySelector('.mobile-toggle');
         const menu = document.querySelector('.nav-menu-enhanced');
-        
+        if (toggle && menu) {
+            toggle.classList.remove('active');
+            menu.classList.remove('active');
+            toggle.setAttribute('aria-expanded', 'false');
+        }
+    }
+
+    function initNavigation() {
+        const toggle = document.querySelector('.mobile-toggle');
+        const menu = document.querySelector('.nav-menu-enhanced');
+
         if (toggle && menu) {
             toggle.addEventListener('click', (e) => {
-                e.stopPropagation();
+                e.preventDefault();
+                const isActive = toggle.classList.toggle('active');
                 menu.classList.toggle('active');
-            });
-
-            menu.addEventListener('click', (e) => {
-                if (e.target.tagName === 'A') {
-                    menu.classList.remove('active');
-                }
-            });
-
-            document.addEventListener('click', (e) => {
-                if (!menu.contains(e.target) && !toggle.contains(e.target)) {
-                    menu.classList.remove('active');
-                }
+                toggle.setAttribute('aria-expanded', isActive.toString());
             });
         }
 
-        let ticking = false;
-        const handleScroll = () => {
-            if (!ticking) {
-                requestAnimationFrame(() => {
-                    const header = document.querySelector('.header-enhanced');
-                    if (header) {
-                        const scrollY = window.pageYOffset;
-                        if (scrollY > 100) {
-                            header.classList.add('scrolled');
-                        } else {
-                            header.classList.remove('scrolled');
-                        }
-                    }
-                    ticking = false;
-                });
-                ticking = true;
-            }
-        };
+        function handleNavClick(e) {
+    const link = e.target.closest('a[href^="#"]');
+    if (!link) return;
 
-        window.addEventListener('scroll', handleScroll, { passive: true });
+    e.preventDefault();
+
+    const href = link.getAttribute('href');
+    console.log('Link clickeado:', href);
+
+    let scrollTarget = null;
+    let offsetExtra = 20;
+
+    if (href === '#productos') {
+        // 1) Intentar ir DIRECTO a la tarjeta "stickers" (más específico)
+        scrollTarget = document.querySelector('.product-card-enhanced[data-product="stickers"]');
+
+        // 2) Si no existe, ir al título de la sección o a la propia sección como fallback
+        if (!scrollTarget) {
+            const section = document.querySelector('#productos');
+            scrollTarget = section?.querySelector('.section-header') || section;
+        }
+
+        offsetExtra = 30;
+    } else if (href === '#servicios') {
+        scrollTarget = document.querySelector('section#servicios') || document.querySelector('.services-enhanced');
+        offsetExtra = 20;
+    } else {
+        scrollTarget = document.querySelector(href);
     }
 
-    function initHoverEffects() {
+    if (!scrollTarget) {
+        console.warn('No se encontró objetivo para', href);
+        return;
+    }
+
+    // altura real del header (más fiable)
+    const headerEl = document.querySelector('.header-enhanced');
+    const headerHeight = headerEl ? Math.ceil(headerEl.getBoundingClientRect().height) : 80;
+
+    // posición absoluta del objetivo
+    const rect = scrollTarget.getBoundingClientRect();
+    const absoluteTop = window.scrollY + rect.top;
+    const finalPosition = Math.max(0, Math.floor(absoluteTop - headerHeight - offsetExtra));
+
+    console.log({ href, target: scrollTarget, rectTop: rect.top, absoluteTop, headerHeight, finalPosition });
+
+    window.scrollTo({
+        top: finalPosition,
+        behavior: 'smooth'
+    });
+
+    // cerrar menú móvil si existe
+    if (typeof closeMenuMobile === 'function') closeMenuMobile();
+}
+
+
+        document.addEventListener('click', handleNavClick);
+    }
+
+    function initLokiEffects() {
         const cards = document.querySelectorAll('.service-card-enhanced, .product-card-enhanced');
         const buttons = document.querySelectorAll('.buy-button-enhanced, .cta-button-enhanced, .social-button-enhanced');
 
@@ -202,32 +218,45 @@
             cards.forEach(card => {
                 card.addEventListener('touchstart', () => {
                     card.classList.add('touch-active');
+                    card.style.transform = 'translateY(-5px) scale(1.02)';
                 }, { passive: true });
                 
                 card.addEventListener('touchend', () => {
                     setTimeout(() => {
                         card.classList.remove('touch-active');
+                        card.style.transform = '';
                     }, 150);
                 }, { passive: true });
             });
         } else {
             cards.forEach(card => {
+                let hoverTimeout;
+                
                 card.addEventListener('mouseenter', () => {
+                    clearTimeout(hoverTimeout);
                     card.classList.add('hover-active');
+                    card.style.filter = 'brightness(1.1) saturate(1.2)';
                 });
                 
                 card.addEventListener('mouseleave', () => {
                     card.classList.remove('hover-active');
+                    hoverTimeout = setTimeout(() => {
+                        card.style.filter = '';
+                    }, 300);
                 });
             });
 
             buttons.forEach(btn => {
                 btn.addEventListener('mouseenter', () => {
                     btn.classList.add('hover-active');
+                    btn.style.filter = 'brightness(1.15) saturate(1.3)';
                 });
                 
                 btn.addEventListener('mouseleave', () => {
                     btn.classList.remove('hover-active');
+                    setTimeout(() => {
+                        btn.style.filter = '';
+                    }, 300);
                 });
             });
         }
@@ -240,6 +269,8 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('animate-in');
+                    entry.target.style.transform = 'translateY(0)';
+                    entry.target.style.opacity = '1';
                     observer.unobserve(entry.target);
                 }
             });
@@ -249,7 +280,10 @@
         });
 
         const elements = document.querySelectorAll('.service-card-enhanced, .product-card-enhanced, .about-enhanced');
-        elements.forEach(el => {
+        elements.forEach((el, index) => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = `all 0.6s ease ${index * 0.1}s`;
             observer.observe(el);
         });
     }
@@ -262,7 +296,7 @@
             isModalOpen = true;
             
             const price = parseFloat(productPrice.replace(/[$*]/g, '')) || 0;
-            const whatsappMsg = `Hola! Me interesa comprar: ${productName} - $${price}`;
+            const whatsappMsg = `¡Hola! Me interesa comprar: ${productName} - $${price}`;
             const whatsappUrl = `https://wa.me/593991389251?text=${encodeURIComponent(whatsappMsg)}`;
             
             const modal = document.createElement('div');
@@ -284,21 +318,16 @@
                     <div class="total-section">
                         <h4>Total: <span class="total-price">$${price.toFixed(2)}</span></h4>
                     </div>
-
-                    <div class="payment-qr">
-                        <h4>Escanea para pagar</h4>
-                        <img src="Stickers.jpg" alt="QR de pago" class="qr-image">
-                    </div>
                     
                     <div class="contact-buttons">
                         <a href="${whatsappUrl}" class="contact-btn whatsapp" target="_blank" rel="noopener">
-                            📱 WhatsApp
+                            WhatsApp
                         </a>
                         <a href="mailto:lafilec01@gmail.com?subject=Consulta ${encodeURIComponent(productName)}" class="contact-btn email">
-                            📧 Email
+                            Email
                         </a>
                         <a href="tel:+593991389251" class="contact-btn phone">
-                            📞 Llamar
+                            Llamar
                         </a>
                     </div>
                 </div>
@@ -334,7 +363,6 @@
             
             function closeModal() {
                 if (!isModalOpen) return;
-                
                 isModalOpen = false;
                 modal.classList.remove('show');
                 document.body.style.overflow = '';
@@ -379,7 +407,8 @@
     }
 
     function showNotification(message, type = 'info', duration = 3000) {
-        document.querySelectorAll('.notification').forEach(n => n.remove());
+        const existingNotifications = document.querySelectorAll('.notification');
+        existingNotifications.forEach(n => n.remove());
 
         const notification = document.createElement('div');
         notification.className = 'notification';
@@ -396,7 +425,7 @@
             notification.classList.add('show');
         });
         
-        setTimeout(() => {
+        const timeout = setTimeout(() => {
             notification.classList.remove('show');
             setTimeout(() => {
                 if (notification.parentNode) {
@@ -404,8 +433,9 @@
                 }
             }, 300);
         }, duration);
-
+        
         notification.addEventListener('click', () => {
+            clearTimeout(timeout);
             notification.classList.remove('show');
             setTimeout(() => {
                 if (notification.parentNode) {
@@ -427,33 +457,6 @@
         }
         
         particles.length = 0;
-    }
-
-    window.addEventListener('error', (e) => {
-        console.error('Error:', e.error);
-        showNotification('Ha ocurrido un error en la página', 'error');
-    });
-
-    function init() {
-        if (isInitialized) return;
-        isInitialized = true;
-
-        try {
-            initParticles();
-            initNavigation();
-            initHoverEffects();
-            initObserver();
-            initPurchaseSystem();
-            
-            setTimeout(() => {
-                showNotification('¡Bienvenid@, explora nuestros productos!', 'info', 4000);
-            }, 1500);
-            
-            console.log('LA FIL optimizado correctamente');
-        } catch (error) {
-            console.error('Error al inicializar:', error);
-            showNotification('Error al cargar la página', 'error');
-        }
     }
 
     function handleVisibilityChange() {
@@ -489,6 +492,114 @@
         }
     }
 
+    function initLokiAnimations() {
+        const heroTitle = document.querySelector('.hero-title');
+        const logoText = document.querySelector('.logo-text');
+        const serviceCards = document.querySelectorAll('.service-card-enhanced');
+        const productCards = document.querySelectorAll('.product-card-enhanced');
+
+        if (heroTitle) {
+            heroTitle.addEventListener('mouseenter', () => {
+                heroTitle.style.transform = 'scale(1.02)';
+                heroTitle.style.filter = 'drop-shadow(0 0 40px rgba(255, 215, 0, 0.8))';
+            });
+            
+            heroTitle.addEventListener('mouseleave', () => {
+                heroTitle.style.transform = '';
+                heroTitle.style.filter = '';
+            });
+        }
+
+        if (logoText) {
+            logoText.addEventListener('click', (e) => {
+                e.preventDefault();
+                logoText.style.animation = 'none';
+                logoText.offsetHeight;
+                logoText.style.animation = 'lokiMagic 2s ease-in-out';
+            });
+        }
+
+        serviceCards.forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.2}s`;
+            
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-12px) scale(1.03) rotateX(5deg)';
+                card.style.boxShadow = '0 20px 60px rgba(0, 0, 0, 0.4), 0 0 30px rgba(255, 215, 0, 0.3)';
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = '';
+                card.style.boxShadow = '';
+            });
+        });
+
+        productCards.forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.15}s`;
+            // Los efectos de hover se manejan completamente con CSS
+        });
+    }
+
+    function addScrollEffects() {
+        let lastScrollY = window.scrollY;
+        
+        function handleScroll() {
+            const currentScrollY = window.scrollY;
+            const header = document.querySelector('.header-enhanced');
+            
+            if (header) {
+                if (currentScrollY > lastScrollY && currentScrollY > 100) {
+                    header.style.transform = 'translateY(-100%)';
+                } else {
+                    header.style.transform = 'translateY(0)';
+                }
+                
+                if (currentScrollY > 50) {
+                    header.style.background = 'linear-gradient(135deg, rgba(34, 85, 34, 0.98) 0%, rgba(45, 105, 45, 0.98) 50%, rgba(25, 65, 25, 0.98) 100%)';
+                    header.style.backdropFilter = 'blur(25px)';
+                } else {
+                    header.style.background = '';
+                    header.style.backdropFilter = '';
+                }
+            }
+            
+            lastScrollY = currentScrollY;
+        }
+        
+        let ticking = false;
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    handleScroll();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        });
+    }
+
+    function init() {
+        if (isInitialized) return;
+        isInitialized = true;
+
+        try {
+            initParticles();
+            initNavigation();
+            initLokiEffects();
+            initObserver();
+            initPurchaseSystem();
+            initLokiAnimations();
+            addScrollEffects();
+            
+            setTimeout(() => {
+                showNotification('¡Bienvenid@s! Explora nuestros productos', 'info', 4000);
+            }, 1500);
+            
+        } catch (error) {
+            console.error('Error al inicializar:', error);
+            showNotification('Error al cargar la página', 'error');
+        }
+    }
+
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
     } else {
@@ -497,21 +608,15 @@
 
     window.addEventListener('beforeunload', cleanup);
     window.addEventListener('visibilitychange', handleVisibilityChange);
-    
     window.addEventListener('unload', () => {
         cleanup();
         isInitialized = false;
     });
 
-    document.addEventListener('DOMContentLoaded', () => {
-        const logo = document.querySelector('.logo-enhanced');
-        if (logo && !logo.dataset.handlerAdded) {
-            logo.dataset.handlerAdded = 'true';
-            logo.addEventListener('click', (e) => {
-                e.preventDefault();
-                window.location.href = window.location.origin + window.location.pathname;
-            });
-        }
-    });
+    scrollTarget = document.querySelector('#product-stickers') || document.querySelector('#productos');
+    const headerEl = document.querySelector('.header-enhanced');
+if (headerEl) {
+    document.documentElement.style.setProperty('--header-height', `${Math.ceil(headerEl.getBoundingClientRect().height)}px`);
+}
 
 })();
