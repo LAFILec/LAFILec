@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="La Fil - Productos y Servicios de calidad con tecnología avanzada">
-    <meta name="keywords" content="productos, servicios, tecnología, calidad">
     <title>LA FIL - Productos y Servicios</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,13 +19,21 @@
     <header class="header-enhanced">
         <nav class="nav-container">
             <a href="https://lafilec.github.io/LAFILec/" class="logo-enhanced">
-                <span class="logo-text">LA FIL</span>
+                <div class="logo-container">
+                    <img src="lafil.png" alt="LA FIL Logo" class="logo-image">
+                    <span class="logo-text">Vive la música</span>
+                </div>
                 <div class="logo-glow"></div>
             </a>
+            <button class="mobile-toggle" aria-label="Toggle navigation" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
             <ul class="nav-menu-enhanced">
-                <li><a href="#servicios" class="nav-link-enhanced">Explorar</a></li>
-                <li><a href="#about" class="nav-link-enhanced">Productos</a></li>
+                <li><a href="#productos" class="nav-link-enhanced">Productos</a></li>
                 <li><a href="#contacto" class="nav-link-enhanced">Contacto</a></li>
+                <li><a href="https://lafilec.github.io/Temas/" class="nav-link-enhanced">Repertorio</a></li>
                 <li>
                     <a href="https://vaki.co/es/vaki/9bw4pe0KavU7nMg0O8XH?utm_source=copy&utm_medium=vaki-page&utm_campaign=v4" 
                        class="social-button-enhanced" target="_blank" rel="noopener">
@@ -44,11 +51,6 @@
                     </a>
                 </li>
             </ul>
-            <button class="mobile-toggle" aria-label="Toggle navigation">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
         </nav>
     </header>
 
@@ -81,19 +83,16 @@
             </div>
             <div class="services-grid-enhanced">
                 <div class="service-card-enhanced" data-service="vocal">
-                    <div class="service-icon vocal-icon"></div>
                     <h3>Voz Escénica</h3>
                     <p>Interpretaciones vocales en vivo para conciertos, eventos y montajes artísticos.</p>
                     <div class="service-glow"></div>
                 </div>
                 <div class="service-card-enhanced" data-service="souvenirs">
-                    <div class="service-icon souvenirs-icon"></div>
                     <h3>Souvenirs Vivos</h3>
                     <p>Productos con alma, cargados de historia, diseñados para perdurar.</p>
                     <div class="service-glow"></div>
                 </div>
                 <div class="service-card-enhanced" data-service="pause">
-                    <div class="service-icon pause-icon"></div>
                     <h3>Pausa Consciente</h3>
                     <p>Productos y experiencias que invitan a detener el tiempo y reconectar con el presente.</p>
                     <div class="service-glow"></div>
@@ -109,7 +108,7 @@
                 </h2>
             </div>
             <div class="products-grid-enhanced">
-                <div class="product-card-enhanced" data-product="stickers">
+                <div class="product-card-enhanced" data-product="stickers" id="product-stickers">
                     <div class="product-image-enhanced">
                         <img src="stickers.jpg" alt="Stickers únicos" loading="lazy" />
                         <div class="image-overlay"></div>
@@ -160,23 +159,6 @@
                     <div class="product-floating-icon"></div>
                 </div>
 
-                <div class="product-card-enhanced premium" data-product="limited">
-                    <div class="product-image-enhanced">
-                        <div class="premium-icon">🎙️</div>
-                        <div class="image-overlay premium-overlay"></div>
-                    </div>
-                    <div class="product-info-enhanced">
-                        <h3>Edición Limitada</h3>
-                        <p>Simulacro de producto exclusivo con características únicas y disponibilidad limitada para coleccionistas.</p>
-                        <div class="product-price-enhanced premium-price">$1299.99</div>
-                        <button class="buy-button-enhanced premium-button">
-                            <span class="button-text">Hoy no comprar, mañana sí</span>
-                            <div class="button-glow premium-glow"></div>
-                        </button>
-                    </div>
-                    <div class="product-floating-icon premium-floating"></div>
-                </div>
-
                 <div class="product-card-enhanced coming-soon" data-product="coming">
                     <div class="product-image-enhanced">
                         <div class="coming-soon-icon">😐</div>
@@ -220,11 +202,11 @@
             <div class="footer-section-enhanced">
                 <h3>Contacto</h3>
                 <div class="contact-item">
-                    <span class="contact-icon">📧</span>
+                    <span class="contact-icon">✉️</span>
                     <span class="contact-text">lafilec01@gmail.com</span>
                 </div>
                 <div class="contact-item">
-                    <span class="contact-icon">📱</span>
+                    <span class="contact-icon">☎️</span>
                     <span class="contact-text">+593 991389251</span>
                 </div>
                 <div class="contact-item">
