@@ -152,60 +152,57 @@
         }
 
         function handleNavClick(e) {
-    const link = e.target.closest('a[href^="#"]');
-    if (!link) return;
+            const link = e.target.closest('a[href^="#"]');
+            if (!link) return;
 
-    e.preventDefault();
+            e.preventDefault();
 
-    const href = link.getAttribute('href');
-    console.log('Link clickeado:', href);
+            const href = link.getAttribute('href');
+            console.log('Link clickeado:', href);
 
-    let scrollTarget = null;
-    let offsetExtra = 20;
+            let scrollTarget = null;
+            let offsetExtra = 20;
 
-    if (href === '#productos') {
-        // 1) Intentar ir DIRECTO a la tarjeta "stickers" (más específico)
-        scrollTarget = document.querySelector('.product-card-enhanced[data-product="stickers"]');
+            if (href === '#productos') {
+                scrollTarget = document.querySelector('.product-card-enhanced[data-product="stickers"]');
 
-        // 2) Si no existe, ir al título de la sección o a la propia sección como fallback
-        if (!scrollTarget) {
-            const section = document.querySelector('#productos');
-            scrollTarget = section?.querySelector('.section-header') || section;
+                if (!scrollTarget) {
+                    const section = document.querySelector('#productos');
+                    scrollTarget = section?.querySelector('.section-header') || section;
+                }
+
+                offsetExtra = 30;
+            } else if (href === '#servicios') {
+                scrollTarget = document.querySelector('section#servicios') || document.querySelector('.services-enhanced');
+                offsetExtra = 20;
+            } else if (href === '#contacto') {
+                scrollTarget = document.querySelector('#contacto') || document.querySelector('.footer-enhanced');
+                offsetExtra = 20;
+            } else {
+                scrollTarget = document.querySelector(href);
+            }
+
+            if (!scrollTarget) {
+                console.warn('No se encontró objetivo para', href);
+                return;
+            }
+
+            const headerEl = document.querySelector('.header-enhanced');
+            const headerHeight = headerEl ? Math.ceil(headerEl.getBoundingClientRect().height) : 80;
+
+            const rect = scrollTarget.getBoundingClientRect();
+            const absoluteTop = window.scrollY + rect.top;
+            const finalPosition = Math.max(0, Math.floor(absoluteTop - headerHeight - offsetExtra));
+
+            console.log({ href, target: scrollTarget, rectTop: rect.top, absoluteTop, headerHeight, finalPosition });
+
+            window.scrollTo({
+                top: finalPosition,
+                behavior: 'smooth'
+            });
+
+            if (typeof closeMenuMobile === 'function') closeMenuMobile();
         }
-
-        offsetExtra = 30;
-    } else if (href === '#servicios') {
-        scrollTarget = document.querySelector('section#servicios') || document.querySelector('.services-enhanced');
-        offsetExtra = 20;
-    } else {
-        scrollTarget = document.querySelector(href);
-    }
-
-    if (!scrollTarget) {
-        console.warn('No se encontró objetivo para', href);
-        return;
-    }
-
-    // altura real del header (más fiable)
-    const headerEl = document.querySelector('.header-enhanced');
-    const headerHeight = headerEl ? Math.ceil(headerEl.getBoundingClientRect().height) : 80;
-
-    // posición absoluta del objetivo
-    const rect = scrollTarget.getBoundingClientRect();
-    const absoluteTop = window.scrollY + rect.top;
-    const finalPosition = Math.max(0, Math.floor(absoluteTop - headerHeight - offsetExtra));
-
-    console.log({ href, target: scrollTarget, rectTop: rect.top, absoluteTop, headerHeight, finalPosition });
-
-    window.scrollTo({
-        top: finalPosition,
-        behavior: 'smooth'
-    });
-
-    // cerrar menú móvil si existe
-    if (typeof closeMenuMobile === 'function') closeMenuMobile();
-}
-
 
         document.addEventListener('click', handleNavClick);
     }
@@ -296,7 +293,7 @@
             isModalOpen = true;
             
             const price = parseFloat(productPrice.replace(/[$*]/g, '')) || 0;
-            const whatsappMsg = `¡Hola! Me interesa comprar: ${productName} - $${price}`;
+            const whatsappMsg = `¡Hola! Me interesa comprar: ${productName} - ${price}`;
             const whatsappUrl = `https://wa.me/593991389251?text=${encodeURIComponent(whatsappMsg)}`;
             
             const modal = document.createElement('div');
@@ -306,7 +303,7 @@
                     <button class="modal-close" aria-label="Cerrar modal">&times;</button>
                     <div class="product-info">
                         <h3>${productName}</h3>
-                        <div class="product-price">$${price.toFixed(2)}</div>
+                        <div class="product-price">${price.toFixed(2)}</div>
                     </div>
                     
                     <div class="quantity-section">
@@ -316,18 +313,19 @@
                     </div>
                     
                     <div class="total-section">
-                        <h4>Total: <span class="total-price">$${price.toFixed(2)}</span></h4>
+                        <h4>Total: <span class="total-price">${price.toFixed(2)}</span></h4>
                     </div>
                     
+                    <div class="qr-container">
+                        <img src="PB.png" alt="Código QR" class="qr-image">
+                    </div>
+
                     <div class="contact-buttons">
                         <a href="${whatsappUrl}" class="contact-btn whatsapp" target="_blank" rel="noopener">
                             WhatsApp
                         </a>
                         <a href="mailto:lafilec01@gmail.com?subject=Consulta ${encodeURIComponent(productName)}" class="contact-btn email">
                             Email
-                        </a>
-                        <a href="tel:+593991389251" class="contact-btn phone">
-                            Llamar
                         </a>
                     </div>
                 </div>
@@ -346,7 +344,7 @@
             function updateTotal() {
                 const qty = Math.max(1, Math.min(99, parseInt(quantityInput.value) || 1));
                 quantityInput.value = qty;
-                totalPrice.textContent = `$${(price * qty).toFixed(2)}`;
+                totalPrice.textContent = `${(price * qty).toFixed(2)}`;
             }
             
             modal.querySelector('.minus').addEventListener('click', () => {
@@ -535,7 +533,6 @@
 
         productCards.forEach((card, index) => {
             card.style.animationDelay = `${index * 0.15}s`;
-            // Los efectos de hover se manejan completamente con CSS
         });
     }
 
@@ -554,7 +551,7 @@
                 }
                 
                 if (currentScrollY > 50) {
-                    header.style.background = 'linear-gradient(135deg, rgba(34, 85, 34, 0.98) 0%, rgba(45, 105, 45, 0.98) 50%, rgba(25, 65, 25, 0.98) 100%)';
+                    header.style.background = 'linear-gradient(135deg, rgba(45, 100, 45, 0.98) 0%, rgba(55, 120, 55, 0.98) 50%, rgba(35, 80, 35, 0.98) 100%)';
                     header.style.backdropFilter = 'blur(25px)';
                 } else {
                     header.style.background = '';
@@ -613,10 +610,9 @@
         isInitialized = false;
     });
 
-    scrollTarget = document.querySelector('#product-stickers') || document.querySelector('#productos');
     const headerEl = document.querySelector('.header-enhanced');
-if (headerEl) {
-    document.documentElement.style.setProperty('--header-height', `${Math.ceil(headerEl.getBoundingClientRect().height)}px`);
-}
+    if (headerEl) {
+        document.documentElement.style.setProperty('--header-height', `${Math.ceil(headerEl.getBoundingClientRect().height)}px`);
+    }
 
 })();
