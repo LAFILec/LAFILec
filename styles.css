@@ -1,4 +1,11 @@
-* {
+.products-grid-enhanced {
+        max-width: 350px;
+    }    
+    .product-card-enhanced {
+        margin: 0 auto;
+        max-width: 400px;
+        width: 100%;
+    }* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -24,7 +31,7 @@ body {
     position: relative;
 }
 
-@keyframes lokiGlow {
+@keyframes glow {
     0%, 100% { 
         box-shadow: 0 0 20px rgba(80, 220, 80, 0.4), 0 0 40px rgba(255, 215, 0, 0.3);
         filter: hue-rotate(0deg);
@@ -39,7 +46,7 @@ body {
     }
 }
 
-@keyframes lokiShimmer {
+@keyframes shimmer {
     0%, 100% { 
         background-position: -200% 50%;
         transform: scale(1);
@@ -50,14 +57,14 @@ body {
     }
 }
 
-@keyframes lokiFloat {
+@keyframes float {
     0%, 100% { transform: translateY(0px) rotate(0deg); }
     25% { transform: translateY(-8px) rotate(1deg); }
     50% { transform: translateY(-4px) rotate(0deg); }
     75% { transform: translateY(-12px) rotate(-1deg); }
 }
 
-@keyframes lokiPulse {
+@keyframes pulse {
     0%, 100% { 
         opacity: 0.7;
         transform: scale(1);
@@ -68,7 +75,7 @@ body {
     }
 }
 
-@keyframes lokiMagic {
+@keyframes magic {
     0% { 
         background-position: 0% 50%;
         filter: hue-rotate(0deg) brightness(1);
@@ -120,14 +127,14 @@ body {
     text-decoration: none;
     display: inline-block;
     transition: transform 0.3s ease;
-    background: none !important; 
-    border: none !important; 
-    outline: none !important; 
+    background: none !important;
+    border: none !important;
+    outline: none !important;
 }
 
 .logo-enhanced:hover {
     transform: scale(1.08);
-    animation: lokiGlow 2s ease-in-out infinite;
+    animation: glow 2s ease-in-out infinite;
 }
 
 .logo-enhanced:hover,
@@ -150,8 +157,8 @@ body {
 }
 
 .logo-image {
-    width: clamp(4rem, 6vw, 4.5rem);
-    height: clamp(4rem, 6vw, 4.5rem);
+    width: clamp(2.5rem, 4vw, 3.5rem);
+    height: clamp(2.5rem, 4vw, 3.5rem);
     object-fit: contain;
     border-radius: 8px;
     filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.4));
@@ -167,7 +174,7 @@ body {
 
 .logo-text {
     font-family: 'Orbitron', monospace;
-    font-size: clamp(0.5rem, 1vw, 0.9rem);
+    font-size: clamp(0.75rem, 1.5vw, 1.1rem);
     font-weight: 700;
     background: linear-gradient(45deg, 
         #32CD32, #FFD700, #78FF78, #FFD700, #32CD32
@@ -177,7 +184,7 @@ body {
     -webkit-text-fill-color: transparent;
     background-clip: text;
     letter-spacing: clamp(1px, 0.8vw, 2px);
-    animation: lokiMagic 8s ease-in-out infinite;
+    animation: magic 8s ease-in-out infinite;
     filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.4));
     display: block;
     -webkit-text-stroke: 0.5px rgba(255, 255, 255, 0.1);
@@ -197,7 +204,7 @@ body {
         transparent 70%
     );
     border-radius: 50%;
-    animation: lokiPulse 4s ease-in-out infinite;
+    animation: pulse 4s ease-in-out infinite;
     z-index: 1;
 }
 
@@ -288,7 +295,7 @@ body {
     gap: 0.8rem;
     position: relative;
     overflow: hidden;
-    animation: lokiMagic 10s ease-in-out infinite;
+    animation: magic 10s ease-in-out infinite;
     box-shadow: 0 4px 15px rgba(50, 180, 50, 0.4);
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -308,7 +315,7 @@ body {
 .social-button-enhanced:hover,
 .social-button-enhanced.hover-active {
     transform: translateY(-3px) scale(1.03);
-    animation: lokiGlow 1.5s ease-in-out infinite;
+    animation: glow 1.5s ease-in-out infinite;
     border-color: rgba(255, 255, 255, 0.8);
 }
 
@@ -380,7 +387,7 @@ body {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    animation: lokiMagic 12s ease-in-out infinite;
+    animation: magic 12s ease-in-out infinite;
     filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.6));
     margin: 0;
     text-align: center;
@@ -395,7 +402,7 @@ body {
         transparent, #32CD32, #FFD700, #78FF78, #FFD700, #32CD32, transparent
     );
     background-size: 200% 100%;
-    animation: lokiShimmer 3s ease-in-out infinite;
+    animation: shimmer 3s ease-in-out infinite;
     border-radius: 2px;
     margin-top: 1rem;
 }
@@ -436,14 +443,14 @@ body {
     overflow: hidden;
     text-transform: uppercase;
     letter-spacing: clamp(1px, 0.8vw, 4px);
-    animation: lokiMagic 15s ease-in-out infinite;
+    animation: magic 15s ease-in-out infinite;
     box-shadow: 0 10px 30px rgba(50, 180, 50, 0.5);
     will-change: transform;
 }
 
 .cta-button-enhanced:hover {
     transform: translateY(-4px) scale(1.05);
-    animation: lokiGlow 2s ease-in-out infinite;
+    animation: glow 2s ease-in-out infinite;
     border-color: rgba(255, 255, 255, 0.9);
 }
 
@@ -501,20 +508,20 @@ body {
     height: 3px;
     background: linear-gradient(90deg, #32CD32, #FFD700, #78FF78, #FFD700, #32CD32);
     background-size: 200% 100%;
-    animation: lokiShimmer 4s ease-in-out infinite;
+    animation: shimmer 4s ease-in-out infinite;
     border-radius: 2px;
     margin-top: 1rem;
 }
 
 .services-grid-enhanced {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: clamp(2rem, 4vw, 3rem);
     margin-top: 3rem;
-    justify-items: center;
     max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
+    align-items: stretch;
 }
 
 .service-card-enhanced {
@@ -526,7 +533,7 @@ body {
     backdrop-filter: blur(15px);
     border: 2px solid rgba(255, 215, 0, 0.6);
     border-radius: 25px;
-    padding: clamp(2rem, 4vw, 3rem);
+    padding: clamp(2rem, 4vw, 2.5rem);
     text-align: center;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), 0 0 20px rgba(255, 215, 0, 0.1);
     transition: all 0.4s ease;
@@ -534,8 +541,11 @@ body {
     opacity: 0;
     transform: translateY(20px);
     will-change: transform;
-    max-width: 350px;
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 250px;
 }
 
 .service-card-enhanced.animate-in {
@@ -547,8 +557,9 @@ body {
     content: '';
     position: absolute;
     top: 0;
-    left: 0;
-    right: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 94%;
     height: 5px;
     background: linear-gradient(90deg, #32CD32, #FFD700, #32CD32);
     border-radius: 25px 25px 0 0;
@@ -557,7 +568,7 @@ body {
 .service-card-enhanced:hover,
 .service-card-enhanced.hover-active {
     transform: translateY(-8px) scale(1.02);
-    animation: lokiFloat 4s ease-in-out infinite;
+    animation: float 4s ease-in-out infinite;
     border-color: rgba(255, 215, 0, 0.8);
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3), 0 0 25px rgba(255, 215, 0, 0.2);
 }
@@ -575,17 +586,8 @@ body {
     height: 70%;
     background: radial-gradient(ellipse, rgba(255, 215, 0, 0.08) 0%, transparent 70%);
     border-radius: 50%;
-    animation: lokiPulse 6s ease-in-out infinite;
+    animation: pulse 6s ease-in-out infinite;
     z-index: 1;
-}
-
-.service-icon {
-    font-size: clamp(2rem, 4vw, 3rem);
-    margin-bottom: 1.5rem;
-    display: block;
-    position: relative;
-    z-index: 2;
-    filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.5));
 }
 
 .service-card-enhanced h3 {
@@ -609,6 +611,39 @@ body {
     position: relative;
     z-index: 2;
     opacity: 0.9;
+}
+
+.service-pdf-btn {
+    background: linear-gradient(135deg, #40B040, #FFD700, #50C050);
+    color: #0a1a0a;
+    padding: 0.8rem 1.5rem;
+    border: 2px solid rgba(255, 215, 0, 0.6);
+    border-radius: 15px;
+    text-decoration: none;
+    font-family: 'Electrolize', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    z-index: 3;
+}
+
+.service-pdf-btn:hover {
+    transform: translateY(-2px) scale(1.05);
+    animation: glow 2s ease-in-out infinite;
+    border-color: rgba(255, 255, 255, 0.8);
+}
+
+.pdf-icon {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
 }
 
 .products-enhanced {
@@ -662,7 +697,6 @@ body {
 
 .product-card-enhanced.touch-active {
     transform: translateY(-5px) scale(1.01);
-    animation: blurRefocus 0.6s ease-out;
 }
 
 .product-image-enhanced {
@@ -750,7 +784,7 @@ body {
     -webkit-text-fill-color: transparent;
     background-clip: text;
     margin-bottom: 1.5rem;
-    animation: lokiMagic 10s ease-in-out infinite;
+    animation: magic 10s ease-in-out infinite;
     filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.4));
 }
 
@@ -773,7 +807,7 @@ body {
     overflow: hidden;
     text-transform: uppercase;
     letter-spacing: 1px;
-    animation: lokiMagic 12s ease-in-out infinite;
+    animation: magic 12s ease-in-out infinite;
     box-shadow: 0 5px 20px rgba(50, 180, 50, 0.4);
     text-decoration: none;
     display: inline-flex;
@@ -785,7 +819,7 @@ body {
 
 .buy-button-enhanced:hover {
     transform: translateY(-3px) scale(1.02);
-    animation: lokiGlow 2s ease-in-out infinite;
+    animation: glow 2s ease-in-out infinite;
     border-color: rgba(255, 255, 255, 0.8);
 }
 
@@ -801,97 +835,6 @@ body {
 
 .buy-button-enhanced:hover .button-glow {
     left: 100%;
-}
-
-.product-card-enhanced.premium {
-    border: 2px solid rgba(255, 215, 0, 0.8);
-    background: linear-gradient(145deg, 
-        rgba(255, 215, 0, 0.15), 
-        rgba(255, 255, 255, 0.12),
-        rgba(60, 180, 60, 0.1)
-    );
-    animation: lokiGlow 8s ease-in-out infinite;
-}
-
-.premium-icon {
-    font-size: clamp(2.5rem, 6vw, 4rem);
-    color: #FFD700;
-    text-shadow: 0 0 25px rgba(255, 215, 0, 0.8);
-    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.3));
-}
-
-.premium-overlay {
-    background: repeating-linear-gradient(
-        45deg, 
-        rgba(255, 215, 0, 0.06), 
-        rgba(255, 215, 0, 0.06) 12px, 
-        rgba(255, 255, 255, 0.03) 12px, 
-        rgba(255, 255, 255, 0.03) 24px
-    );
-}
-
-.premium-price {
-    background: linear-gradient(45deg, #FFD700, #FFFFFF, #FFA500, #FFD700);
-    background-size: 300% 300%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: lokiMagic 6s ease-in-out infinite;
-}
-
-.premium-button {
-    background: linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FFD700 100%);
-    box-shadow: 0 6px 25px rgba(255, 165, 0, 0.4);
-}
-
-.premium-floating {
-    color: #FFD700;
-    font-size: 2rem;
-    filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.6));
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    z-index: 3;
-    animation: lokiFloat 4s ease-in-out infinite;
-}
-
-.product-card-enhanced.coming-soon {
-    border: 2px solid rgba(255, 255, 255, 0.5);
-    background: linear-gradient(145deg, 
-        rgba(255, 255, 255, 0.15), 
-        rgba(60, 180, 60, 0.08)
-    );
-}
-
-.coming-soon-icon {
-    font-size: clamp(2.5rem, 6vw, 4rem);
-    color: #FFFFFF;
-    opacity: 0.8;
-    animation: lokiPulse 4s ease-in-out infinite;
-    text-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
-    filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.4));
-}
-
-.coming-soon-overlay {
-    background: repeating-linear-gradient(
-        45deg, 
-        rgba(255, 255, 255, 0.04), 
-        rgba(255, 255, 255, 0.04) 15px, 
-        transparent 15px, 
-        transparent 30px
-    );
-}
-
-.buy-button-enhanced.disabled {
-    background: linear-gradient(135deg, #777, #999, #777);
-    cursor: not-allowed;
-    opacity: 0.6;
-    animation: none;
-}
-
-.buy-button-enhanced.disabled:hover {
-    transform: none;
-    animation: none;
 }
 
 .about-enhanced {
@@ -954,7 +897,7 @@ body {
         #32CD32, #FFD700, #78FF78, #FFD700, #32CD32
     );
     background-size: 300% 100%;
-    animation: lokiShimmer 6s ease-in-out infinite;
+    animation: shimmer 6s ease-in-out infinite;
     border-radius: 30px 30px 0 0;
 }
 
@@ -1016,7 +959,7 @@ body {
     height: 40px;
     background: radial-gradient(circle, rgba(255, 215, 0, 0.3) 0%, transparent 70%);
     border-radius: 50%;
-    animation: lokiPulse 5s ease-in-out infinite;
+    animation: pulse 5s ease-in-out infinite;
 }
 
 .footer-enhanced {
@@ -1052,7 +995,7 @@ body {
     width: 150%;
     height: 75%;
     background: radial-gradient(ellipse, rgba(255, 215, 0, 0.08) 0%, transparent 70%);
-    animation: lokiPulse 12s ease-in-out infinite;
+    animation: pulse 12s ease-in-out infinite;
 }
 
 .footer-content-enhanced {
@@ -1154,7 +1097,7 @@ body {
     background: linear-gradient(135deg, #FFD700, #50C050, #FFD700);
     border-color: #FFD700;
     transform: translateY(-2px) scale(1.02);
-    animation: lokiGlow 1.5s ease-in-out infinite;
+    animation: glow 1.5s ease-in-out infinite;
 }
 
 .footer-links {
@@ -1332,7 +1275,7 @@ body {
 
 .quantity-btn:hover {
     transform: scale(1.1);
-    animation: lokiGlow 1s ease-in-out infinite;
+    animation: glow 1s ease-in-out infinite;
 }
 
 .quantity-input {
@@ -1347,32 +1290,107 @@ body {
     font-weight: bold;
 }
 
+.total-section h4 {
+    margin: 0 0 1.5rem 0;
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: #FFD700;
+    text-align: center;
+    font-family: 'Electrolize', sans-serif;
+}
+
+.qr-container {
+    width: 280px;
+    margin: 0 auto 1.5rem auto;
+    text-align: center;
+}
+
+.qr-container img.qr-image {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    display: block;
+    border: 2px solid rgba(255, 215, 0, 0.4);
+    transition: all 0.3s ease;
+}
+
+.qr-container img.qr-image:hover {
+    transform: scale(1.1);
+    border-color: rgba(255, 215, 0, 0.6);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+}
+
+.qr-instruction {
+    font-size: 0.9rem;
+    color: #f8fff8;
+    margin-top: 0.8rem;
+    margin-bottom: 1rem;
+    opacity: 0.9;
+    line-height: 1.4;
+    font-family: 'Electrolize', sans-serif;
+}
+
 .contact-buttons {
     display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    margin-top: 2rem;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    margin-top: 1rem;
 }
 
 .contact-btn {
     background: linear-gradient(135deg, #40B040, #FFD700, #50C050);
-    color: #0a1a0a;
-    padding: 1rem 2rem;
+    color: #ffffff;
+    padding: 0.8rem;
     border: none;
-    border-radius: 15px;
+    border-radius: 50%;
     text-decoration: none;
-    font-weight: 600;
-    font-size: 1rem;
     transition: all 0.3s ease;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
+    width: 48px;
+    height: 48px;
+    box-shadow: 0 4px 15px rgba(50, 180, 50, 0.4);
+    position: relative;
+    overflow: hidden;
 }
 
 .contact-btn:hover {
-    transform: translateY(-2px) scale(1.02);
-    animation: lokiGlow 2s ease-in-out infinite;
+    transform: translateY(-3px) scale(1.1);
+    animation: glow 2s ease-in-out infinite;
+    box-shadow: 0 6px 20px rgba(50, 180, 50, 0.6);
+}
+
+.contact-btn.whatsapp {
+    background: linear-gradient(135deg, #25D366, #128C7E, #25D366);
+}
+
+.contact-btn.whatsapp:hover {
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
+}
+
+.contact-btn.email {
+    background: linear-gradient(135deg, #0072C6, #005A9F, #0072C6);
+}
+
+.contact-btn.email:hover {
+    box-shadow: 0 6px 20px rgba(0, 114, 198, 0.6);
+}
+
+.contact-icon {
+    width: 20px;
+    height: 20px;
+    fill: #ffffff;
+    transition: all 0.3s ease;
+}
+
+.contact-btn:hover .contact-icon {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));
 }
 
 .mobile-toggle {
@@ -1388,7 +1406,7 @@ body {
     padding: 12px;
     cursor: pointer;
     transition: all 0.3s ease;
-    animation: lokiMagic 6s ease-in-out infinite;
+    animation: magic 6s ease-in-out infinite;
     box-shadow: 0 4px 15px rgba(50, 180, 50, 0.4);
 }
 
@@ -1403,7 +1421,7 @@ body {
 
 .mobile-toggle:hover {
     transform: scale(1.05);
-    animation: lokiGlow 2s ease-in-out infinite;
+    animation: glow 2s ease-in-out infinite;
 }
 
 .mobile-toggle.active span:nth-child(1) {
@@ -1427,7 +1445,7 @@ body {
     right: 15px;
     font-size: 1.5rem;
     opacity: 0.8;
-    animation: lokiFloat 4s ease-in-out infinite;
+    animation: float 4s ease-in-out infinite;
     z-index: 3;
     filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
 }
@@ -1496,18 +1514,23 @@ body {
         min-height: 55vh;
     }
     
-    .services-grid-enhanced,
+    .services-grid-enhanced {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        max-width: 450px;
+    }
+
     .products-grid-enhanced {
         grid-template-columns: 1fr;
         gap: 2rem;
         max-width: 450px;
     }
     
-    .service-card-enhanced,
-    .product-card-enhanced {
+    .service-card-enhanced {
         margin: 0 auto;
         max-width: 400px;
         width: 100%;
+        min-height: 200px;
     }
 
     .footer-content-enhanced {
@@ -1563,9 +1586,14 @@ body {
         gap: 0.5rem;
     }
 
-    .services-grid-enhanced,
-    .products-grid-enhanced {
+    .services-grid-enhanced {
         max-width: 350px;
+    }
+
+    .service-card-enhanced {
+        padding: 1.5rem;
+        max-width: 320px;
+        min-height: 180px;
     }
 
     .social-button-enhanced {
@@ -1576,7 +1604,12 @@ body {
 }
 
 @media (max-width: 360px) {
-    .service-card-enhanced,
+    .service-card-enhanced {
+        padding: 1.5rem;
+        max-width: 320px;
+        min-height: 160px;
+    }
+
     .product-card-enhanced {
         padding: 1.5rem;
         max-width: 320px;
@@ -1603,71 +1636,6 @@ body {
         margin: 0.5rem !important;
         padding: 1rem !important;
         max-height: 95vh;
-    }
-}
-
-@media (min-width: 1200px) {
-    .services-grid-enhanced {
-        grid-template-columns: repeat(3, 1fr);
-        max-width: 1200px;
-        gap: 3.5rem;
-    }
-    
-    .products-grid-enhanced {
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        max-width: 1200px;
-        gap: 3.5rem;
-    }
-
-    .service-card-enhanced:hover {
-        transform: translateY(-15px) scale(1.04);
-        box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
-    }
-
-    .product-card-enhanced.premium:hover {
-        transform: translateY(-10px) scale(1.03);
-        border-color: rgba(255, 215, 0, 0.9);
-        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 35px rgba(255, 215, 0, 0.5);
-        z-index: 5;
-    }
-
-    .product-card-enhanced.premium:not(:hover) {
-        animation: blurRefocusPremium 1s ease-out;
-    }
-
-    @keyframes blurRefocusPremium {
-        0% { filter: blur(0px); }
-        40% { filter: blur(4px) brightness(0.8) hue-rotate(15deg); }
-        100% { filter: blur(0px); }
-    }
-
-    .product-card-enhanced.coming-soon:hover {
-        transform: translateY(-6px) scale(1.02);
-        border-color: rgba(255, 255, 255, 0.6);
-        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 255, 255, 0.3);
-        z-index: 5;
-    }
-
-    .product-card-enhanced.coming-soon:not(:hover) {
-        animation: blurRefocusComingSoon 0.9s ease-out;
-    }
-
-    @keyframes blurRefocusComingSoon {
-        0% { filter: blur(0px); }
-        45% { filter: blur(3px) brightness(0.85) grayscale(0.3); }
-        100% { filter: blur(0px); }
-    }
-}
-
-@media (min-width: 1600px) {
-    .main-enhanced,
-    .footer-content-enhanced {
-        max-width: 1500px;
-    }
-
-    .services-grid-enhanced,
-    .products-grid-enhanced {
-        gap: 4rem;
     }
 }
 
@@ -1772,27 +1740,6 @@ body,
     font-family: 'Exo 2', 'Segoe UI', 'Arial', sans-serif;
 }
 
-.product-card-enhanced.loading {
-    opacity: 0.6;
-    pointer-events: none;
-    filter: grayscale(0.2);
-}
-
-.product-card-enhanced.loading::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 30px;
-    height: 30px;
-    border: 2px solid rgba(255, 215, 0, 0.3);
-    border-top: 2px solid #FFD700;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    z-index: 10;
-}
-
 @keyframes spin {
     0% { transform: translate(-50%, -50%) rotate(0deg); }
     100% { transform: translate(-50%, -50%) rotate(360deg); }
@@ -1837,159 +1784,12 @@ body,
     }
 }
 
-@media print {
-    .particles,
-    #particle-canvas,
-    .header-enhanced,
-    .footer-enhanced,
-    .mobile-toggle,
-    .buy-button-enhanced,
-    .cta-button-enhanced,
-    .social-button-enhanced,
-    .product-floating-icon {
-        display: none !important;
-    }
-    
-    body {
-        background: white !important;
-        color: black !important;
-        font-size: 11pt;
-        line-height: 1.3;
-    }
-    
-    .hero-enhanced,
-    .service-card-enhanced,
-    .product-card-enhanced,
-    .about-enhanced {
-        background: white !important;
-        color: black !important;
-        box-shadow: none !important;
-        border: 1px solid #333 !important;
-        page-break-inside: avoid;
-        margin-bottom: 0.5cm;
-    }
-
-    .hero-title,
-    .section-title-enhanced .title-text,
-    .service-card-enhanced h3,
-    .product-info-enhanced h3 {
-        color: #333 !important;
-        text-shadow: none !important;
-        filter: none !important;
-    }
-}
-
-.purchase-modal .modal-content {
-    background: linear-gradient(145deg, 
-        rgba(255, 255, 255, 0.18), 
-        rgba(60, 180, 60, 0.14),
-        rgba(255, 215, 0, 0.08)
-    );
-    backdrop-filter: blur(20px);
-    border: 2px solid rgba(255, 215, 0, 0.6);
-    border-radius: 20px;
-    padding: 2rem;
-    max-width: 450px;
-    width: 90%;
-    max-height: 85vh;
-    overflow-y: auto;
-    color: #f8fff8;
-    text-align: center;
-    position: relative;
-    transform: scale(0.9);
-    transition: transform 0.3s ease;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-}
-
-.total-section h4 {
-    margin: 0 0 1.5rem 0;
-    font-weight: 700;
-    font-size: 1.2rem;
-    color: #FFD700;
-    text-align: center;
-    font-family: 'Electrolize', sans-serif;
-}
-
-.qr-container {
-    width: 200px;
-    margin: 0 auto 1.5rem auto;
-    text-align: center;
-}
-
-.qr-container img.qr-image {
+.service-image {
     width: 100%;
     height: auto;
-    max-width: 200px;
-    border-radius: 12px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
     display: block;
-    border: 2px solid rgba(255, 215, 0, 0.4);
-    transition: all 0.3s ease;
-}
-
-.qr-container img.qr-image:hover {
-    transform: scale(1.05);
-    border-color: rgba(255, 215, 0, 0.6);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
-}
-
-.contact-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 1.5rem;
-    margin-top: 1rem;
-    flex-wrap: wrap;
-}
-
-.contact-btn {
-    background: linear-gradient(135deg, #40B040, #FFD700, #50C050);
-    color: #0a1a0a;
-    padding: 1rem;
-    border: none;
-    border-radius: 50%;
-    text-decoration: none;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 56px;
-    height: 56px;
-    box-shadow: 0 4px 15px rgba(50, 180, 50, 0.4);
-    position: relative;
-    overflow: hidden;
-}
-
-.contact-btn:hover {
-    transform: translateY(-3px) scale(1.1);
-    animation: lokiGlow 2s ease-in-out infinite;
-    box-shadow: 0 6px 20px rgba(50, 180, 50, 0.6);
-}
-
-.contact-btn.whatsapp {
-    background: linear-gradient(135deg, #25D366, #128C7E, #25D366);
-}
-
-.contact-btn.whatsapp:hover {
-    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
-}
-
-.contact-btn.email {
-    background: linear-gradient(135deg, #0072C6, #005A9F, #0072C6);
-}
-
-.contact-btn.email:hover {
-    box-shadow: 0 6px 20px rgba(0, 114, 198, 0.6);
-}
-
-.contact-icon {
-    width: 24px;
-    height: 24px;
-    color: #ffffff;
-    transition: all 0.3s ease;
-}
-
-.contact-btn:hover .contact-icon {
-    transform: scale(1.1);
-    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));
+    object-fit: contain;
+    border-radius: 10px;
+    transform: scale(1.25);
+    transform-origin: center;
 }
