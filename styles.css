@@ -24,7 +24,7 @@ body {
         radial-gradient(circle at 20% 80%, rgba(50, 190, 50, 0.12) 0%, transparent 50%),
         radial-gradient(circle at 80% 20%, rgba(255, 215, 0, 0.15) 0%, transparent 50%),
         radial-gradient(circle at 40% 40%, rgba(180, 255, 180, 0.08) 0%, transparent 50%),
-        linear-gradient(135deg, #0f2015 0%, #1f4025 25%, #0f2915 50%, #2f5535 75%, #0f2015 100%);
+        linear-gradient(135deg, #0f2015 0%, #637066 25%, #0f2915 50%, #2f5535 75%, #0f2015 100%);
     background-attachment: fixed;
     min-height: 100vh;
     overflow-x: hidden;
@@ -37,11 +37,11 @@ body {
         filter: hue-rotate(0deg);
     }
     33% { 
-        box-shadow: 0 0 25px rgba(255, 215, 0, 0.6), 0 0 50px rgba(80, 220, 80, 0.4);
+        box-shadow: 0 0 25px #92E010, 0 0 50px rgba(80, 220, 80, 0.4);
         filter: hue-rotate(30deg);
     }
     66% { 
-        box-shadow: 0 0 30px rgba(80, 220, 80, 0.5), 0 0 60px rgba(255, 215, 0, 0.5);
+        box-shadow: 0 0 30px rgba(80, 220, 80, 0.5), 0 0 60px #ffd70080;
         filter: hue-rotate(-15deg);
     }
 }
@@ -102,7 +102,7 @@ body {
         rgba(35, 80, 35, 0.88) 100%
     );
     backdrop-filter: blur(20px);
-    border-bottom: 2px solid rgba(255, 215, 0, 0.6);
+    border-bottom: 2px solid #92E010;
     padding: 1.2rem 0;
     position: fixed;
     top: 0;
@@ -161,14 +161,14 @@ body {
     height: clamp(2.5rem, 4vw, 3.5rem);
     object-fit: contain;
     border-radius: 8px;
-    filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.4));
+    filter: drop-shadow(0 0 15px #ffd70066);
     transition: all 0.3s ease;
-    border: 2px solid rgba(255, 215, 0, 0.3);
+    border: 2px solid #ffd7004d;
 }
 
 .logo-enhanced:hover .logo-image {
-    filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.8));
-    border-color: rgba(255, 215, 0, 0.6);
+    filter: drop-shadow(0 0 25px #E5FB53);
+    border-color: #92E010;
     transform: scale(1.05);
 }
 
@@ -177,7 +177,7 @@ body {
     font-size: clamp(0.75rem, 1.5vw, 1.1rem);
     font-weight: 700;
     background: linear-gradient(45deg, 
-        #32CD32, #FFD700, #78FF78, #FFD700, #32CD32
+        #32CD32, #47E31B, #78FF78, #47E31B, #32CD32
     );
     background-size: 400% 400%;
     -webkit-background-clip: text;
@@ -185,7 +185,7 @@ body {
     background-clip: text;
     letter-spacing: clamp(1px, 0.8vw, 2px);
     animation: magic 8s ease-in-out infinite;
-    filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.4));
+    filter: drop-shadow(0 0 15px #ffd70066);
     display: block;
     -webkit-text-stroke: 0.5px rgba(255, 255, 255, 0.1);
     text-align: center;
@@ -238,7 +238,7 @@ body {
     bottom: 0;
     background: linear-gradient(45deg, 
         rgba(50, 180, 50, 0.3), 
-        rgba(255, 215, 0, 0.15)
+        #ffd70026
     );
     border-radius: 20px;
     opacity: 0;
@@ -254,14 +254,14 @@ body {
     transform: translateX(-50%);
     width: 0;
     height: 2px;
-    background: linear-gradient(90deg, #FFD700, #78FF78, #32CD32);
+    background: linear-gradient(90deg, #47E31B, #78FF78, #32CD32);
     transition: width 0.3s ease;
 }
 
 .nav-link-enhanced:hover,
 .nav-link-enhanced.hover-active {
-    color: #FFD700;
-    text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+    color: #47E31B;
+    text-shadow: 0 0 20px #E5FB53;
     transform: translateY(-2px);
 }
 
@@ -277,12 +277,12 @@ body {
 
 .social-button-enhanced {
     background: linear-gradient(135deg, 
-        #40B040 0%, #FFD700 25%, #78FF78 50%, #FFD700 75%, #50C050 100%
+        #40B040 0%, #47E31B 25%, #78FF78 50%, #47E31B 75%, #50C050 100%
     );
     background-size: 300% 300%;
     color: #0a1a0a;
     padding: clamp(0.8rem, 1.5vw, 1rem) clamp(1.5rem, 2vw, 2rem);
-    border: 2px solid rgba(255, 215, 0, 0.6);
+    border: 2px solid #92E010;
     border-radius: 30px;
     font-family: 'Electrolize', sans-serif;
     font-size: clamp(0.8rem, 1vw, 1rem);
@@ -381,14 +381,14 @@ body {
     font-weight: 900;
     letter-spacing: clamp(4px, 2vw, 15px);
     background: linear-gradient(45deg, 
-        #32CD32, #FFD700, #78FF78, #FFD700, #32CD32
+        #32CD32, #47E31B, #78FF78, #47E31B, #32CD32
     );
     background-size: 400% 400%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     animation: magic 12s ease-in-out infinite;
-    filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.6));
+    filter: drop-shadow(0 0 30px #92E010);
     margin: 0;
     text-align: center;
     transition: all 0.3s ease;
@@ -399,7 +399,7 @@ body {
     width: 60%;
     height: 4px;
     background: linear-gradient(90deg, 
-        transparent, #32CD32, #FFD700, #78FF78, #FFD700, #32CD32, transparent
+        transparent, #32CD32, #47E31B, #78FF78, #47E31B, #32CD32, transparent
     );
     background-size: 200% 100%;
     animation: shimmer 3s ease-in-out infinite;
@@ -423,12 +423,12 @@ body {
 
 .cta-button-enhanced {
     background: linear-gradient(135deg, 
-        #40B040 0%, #FFD700 25%, #78FF78 50%, #FFD700 75%, #50C050 100%
+        #40B040 0%, #47E31B 25%, #78FF78 50%, #47E31B 75%, #50C050 100%
     );
     background-size: 300% 300%;
     color: #0a1a0a;
     padding: clamp(1.2rem, 2.5vw, 1.8rem) clamp(2.5rem, 5vw, 4.5rem);
-    border: 3px solid rgba(255, 215, 0, 0.7);
+    border: 3px solid #47E31B;
     border-radius: 50px;
     font-family: 'Electrolize', sans-serif;
     font-size: clamp(1.1rem, 2.2vw, 1.6rem);
@@ -490,11 +490,11 @@ body {
 }
 
 .title-text {
-    color: #FFD700;
+    color: #47E31B;
     font-family: 'Orbitron', monospace;
     font-size: clamp(2rem, 4.5vw, 3.2rem);
     font-weight: 700;
-    text-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+    text-shadow: 0 0 30px #92E010;
     letter-spacing: clamp(1px, 0.8vw, 3px);
     filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.2));
     margin: 0;
@@ -506,7 +506,7 @@ body {
 .title-decoration {
     width: 80px;
     height: 3px;
-    background: linear-gradient(90deg, #32CD32, #FFD700, #78FF78, #FFD700, #32CD32);
+    background: linear-gradient(90deg, #32CD32, #47E31B, #78FF78, #47E31B, #32CD32);
     background-size: 200% 100%;
     animation: shimmer 4s ease-in-out infinite;
     border-radius: 2px;
@@ -531,7 +531,7 @@ body {
         rgba(255, 215, 0, 0.08)
     );
     backdrop-filter: blur(15px);
-    border: 2px solid rgba(255, 215, 0, 0.6);
+    border: 2px solid #92E010;
     border-radius: 25px;
     padding: clamp(2rem, 4vw, 2.5rem);
     text-align: center;
@@ -561,7 +561,7 @@ body {
     transform: translateX(-50%);
     width: 94%;
     height: 5px;
-    background: linear-gradient(90deg, #32CD32, #FFD700, #32CD32);
+    background: linear-gradient(90deg, #32CD32, #47E31B, #32CD32);
     border-radius: 25px 25px 0 0;
 }
 
@@ -569,7 +569,7 @@ body {
 .service-card-enhanced.hover-active {
     transform: translateY(-8px) scale(1.02);
     animation: float 4s ease-in-out infinite;
-    border-color: rgba(255, 215, 0, 0.8);
+    border-color: #E5FB53;
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3), 0 0 25px rgba(255, 215, 0, 0.2);
 }
 
@@ -591,12 +591,12 @@ body {
 }
 
 .service-card-enhanced h3 {
-    color: #FFD700;
+    color: #47E31B;
     margin-bottom: 1.5rem;
     font-family: 'Electrolize', sans-serif;
     font-size: clamp(1.2rem, 2.5vw, 1.8rem);
     font-weight: 600;
-    text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+    text-shadow: 0 0 20px #92E010;
     text-transform: uppercase;
     letter-spacing: 1px;
     position: relative;
@@ -614,10 +614,10 @@ body {
 }
 
 .service-pdf-btn {
-    background: linear-gradient(135deg, #40B040, #FFD700, #50C050);
+    background: linear-gradient(135deg, #40B040, #47E31B, #50C050);
     color: #0a1a0a;
     padding: 0.8rem 1.5rem;
-    border: 2px solid rgba(255, 215, 0, 0.6);
+    border: 2px solid #92E010;
     border-radius: 15px;
     text-decoration: none;
     font-family: 'Electrolize', sans-serif;
@@ -669,7 +669,7 @@ body {
         rgba(255, 215, 0, 0.08)
     );
     backdrop-filter: blur(15px);
-    border: 2px solid rgba(255, 215, 0, 0.6);
+    border: 2px solid #92E010;
     border-radius: 25px;
     overflow: hidden;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), 0 0 20px rgba(255, 215, 0, 0.1);
@@ -690,8 +690,8 @@ body {
 .product-card-enhanced:hover,
 .product-card-enhanced.hover-active {
     filter: blur(2px) brightness(1.1) saturate(1.2);
-    border-color: rgba(255, 215, 0, 0.8);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4), 0 0 25px rgba(255, 215, 0, 0.3);
+    border-color: #E5FB53;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4), 0 0 25px #ffd7004d;
     transition: all 0.4s ease;
 }
 
@@ -753,12 +753,12 @@ body {
 }
 
 .product-info-enhanced h3 {
-    color: #FFD700;
+    color: #47E31B;
     margin-bottom: 1.5rem;
     font-family: 'Electrolize', sans-serif;
     font-size: clamp(1.2rem, 2vw, 1.6rem);
     font-weight: 600;
-    text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+    text-shadow: 0 0 20px #87E06F;
     text-transform: uppercase;
     letter-spacing: 1px;
 }
@@ -777,7 +777,7 @@ body {
     font-size: clamp(1.5rem, 3vw, 2rem);
     font-weight: bold;
     background: linear-gradient(45deg, 
-        #32CD32, #FFD700, #78FF78, #FFD700, #32CD32
+        #32CD32, #47E31B, #78FF78, #47E31B, #32CD32
     );
     background-size: 300% 300%;
     -webkit-background-clip: text;
@@ -785,17 +785,17 @@ body {
     background-clip: text;
     margin-bottom: 1.5rem;
     animation: magic 10s ease-in-out infinite;
-    filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.4));
+    filter: drop-shadow(0 0 15px #ffd70066);
 }
 
 .buy-button-enhanced {
     background: linear-gradient(135deg, 
-        #40B040 0%, #FFD700 30%, #78FF78 50%, #FFD700 70%, #50C050 100%
+        #40B040 0%, #47E31B 30%, #78FF78 50%, #47E31B 70%, #50C050 100%
     );
     background-size: 300% 300%;
     color: #0a1a0a;
     padding: clamp(1rem, 2vw, 1.3rem) clamp(1.5rem, 3vw, 2.5rem);
-    border: 2px solid rgba(255, 215, 0, 0.6);
+    border: 2px solid #ffd70099;
     border-radius: 20px;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -808,7 +808,7 @@ body {
     text-transform: uppercase;
     letter-spacing: 1px;
     animation: magic 12s ease-in-out infinite;
-    box-shadow: 0 5px 20px rgba(50, 180, 50, 0.4);
+    box-shadow: 0 5px 20px #32b43266;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
@@ -844,7 +844,7 @@ body {
         rgba(255, 215, 0, 0.08)
     );
     backdrop-filter: blur(20px);
-    border: 2px solid rgba(255, 215, 0, 0.6);
+    border: 2px solid #92E010;
     padding: clamp(3rem, 6vw, 5rem);
     border-radius: 30px;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3), 0 0 30px rgba(255, 215, 0, 0.1);
@@ -894,7 +894,7 @@ body {
     right: 0;
     height: 4px;
     background: linear-gradient(90deg, 
-        #32CD32, #FFD700, #78FF78, #FFD700, #32CD32
+        #32CD32, #47E31B, #78FF78, #47E31B, #32CD32
     );
     background-size: 300% 100%;
     animation: shimmer 6s ease-in-out infinite;
@@ -910,12 +910,12 @@ body {
 }
 
 .about-title {
-    color: #FFD700;
+    color: #47E31B;
     font-family: 'Orbitron', monospace;
     font-size: clamp(2rem, 4.5vw, 3.2rem);
     font-weight: 700;
     margin-bottom: 2.5rem;
-    text-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+    text-shadow: 0 0 30px #92E010;
     letter-spacing: clamp(1px, 0.8vw, 3px);
     filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.2));
     position: relative;
@@ -930,7 +930,7 @@ body {
     transform: translateX(-50%);
     width: 50%;
     height: 2px;
-    background: linear-gradient(90deg, transparent, #FFD700, #78FF78, #FFD700, transparent);
+    background: linear-gradient(90deg, transparent, #47E31B, #78FF78, #47E31B, transparent);
     border-radius: 1px;
 }
 
@@ -945,9 +945,9 @@ body {
 
 .about-highlight {
     font-size: clamp(1.2rem, 2.2vw, 1.6rem) !important;
-    color: #FFD700 !important;
+    color: #47E31B !important;
     font-weight: 600;
-    text-shadow: 0 0 25px rgba(255, 215, 0, 0.6) !important;
+    text-shadow: 0 0 25px #92E010 !important;
     filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.2)) !important;
 }
 
@@ -957,7 +957,7 @@ body {
     right: 15px;
     width: 40px;
     height: 40px;
-    background: radial-gradient(circle, rgba(255, 215, 0, 0.3) 0%, transparent 70%);
+    background: radial-gradient(circle, #ffd7004d 0%, transparent 70%);
     border-radius: 50%;
     animation: pulse 5s ease-in-out infinite;
 }
@@ -972,7 +972,7 @@ body {
     color: #f8fff8;
     padding: clamp(3rem, 6vw, 4rem) 2rem 2rem;
     margin-top: clamp(4rem, 8vw, 6rem);
-    border-top: 2px solid rgba(255, 215, 0, 0.6);
+    border-top: 2px solid #92E010;
     position: relative;
     overflow: hidden;
     box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.3);
@@ -1017,13 +1017,13 @@ body {
 }
 
 .footer-section-enhanced h3 {
-    color: #FFD700;
+    color: #47E31B;
     font-family: 'Electrolize', sans-serif;
     font-size: clamp(1.1rem, 2vw, 1.4rem);
     margin-bottom: 1.5rem;
     text-transform: uppercase;
     letter-spacing: 1px;
-    text-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+    text-shadow: 0 0 15px #92E010;
     filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
     position: relative;
 }
@@ -1036,7 +1036,7 @@ body {
     transform: translateX(-50%);
     width: 40px;
     height: 2px;
-    background: linear-gradient(90deg, #FFD700, #78FF78, transparent);
+    background: linear-gradient(90deg, #47E31B, #78FF78, transparent);
     border-radius: 1px;
 }
 
@@ -1049,14 +1049,14 @@ body {
     padding: 0.8rem;
     background: rgba(255, 255, 255, 0.08);
     border-radius: 12px;
-    border: 1px solid rgba(255, 215, 0, 0.3);
+    border: 1px solid #ffd7004d;
     transition: all 0.3s ease;
     max-width: 300px;
 }
 
 .contact-item:hover {
     background: rgba(255, 215, 0, 0.1);
-    border-color: rgba(255, 215, 0, 0.4);
+    border-color: #ffd70066;
     transform: scale(1.02);
 }
 
@@ -1094,8 +1094,8 @@ body {
 
 .social-link-enhanced:hover {
     color: #0a1a0a;
-    background: linear-gradient(135deg, #FFD700, #50C050, #FFD700);
-    border-color: #FFD700;
+    background: linear-gradient(135deg, #47E31B, #50C050, #47E31B);
+    border-color: #47E31B;
     transform: translateY(-2px) scale(1.02);
     animation: glow 1.5s ease-in-out infinite;
 }
@@ -1120,16 +1120,16 @@ body {
 }
 
 .footer-link-enhanced:hover {
-    color: #FFD700;
+    color: #47E31B;
     background: rgba(255, 215, 0, 0.08);
-    border-color: rgba(255, 215, 0, 0.3);
+    border-color: #ffd7004d;
     transform: scale(1.05);
 }
 
 .footer-bottom-enhanced {
     text-align: center;
     padding-top: 2rem;
-    border-top: 1px solid rgba(255, 215, 0, 0.3);
+    border-top: 1px solid #ffd7004d;
     color: #d0d0d0;
     font-size: clamp(0.85rem, 1.1vw, 0.95rem);
     position: relative;
@@ -1164,7 +1164,7 @@ body {
     padding: 1rem 1.5rem;
     border-radius: 12px;
     box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
-    border: 2px solid rgba(255, 215, 0, 0.4);
+    border: 2px solid #ffd70066;
     font-weight: 500;
     cursor: pointer;
     display: flex;
@@ -1214,7 +1214,7 @@ body {
         rgba(255, 215, 0, 0.08)
     );
     backdrop-filter: blur(20px);
-    border: 2px solid rgba(255, 215, 0, 0.6);
+    border: 2px solid #92E010;
     border-radius: 20px;
     padding: 2rem;
     max-width: 450px;
@@ -1239,7 +1239,7 @@ body {
     right: 15px;
     background: none;
     border: none;
-    color: #FFD700;
+    color: #47E31B;
     font-size: 1.5rem;
     cursor: pointer;
     padding: 0.5rem;
@@ -1248,7 +1248,7 @@ body {
 }
 
 .modal-close:hover {
-    background: rgba(255, 215, 0, 0.2);
+    background: #ffd70033;
     transform: scale(1.1);
 }
 
@@ -1261,7 +1261,7 @@ body {
 }
 
 .quantity-btn {
-    background: linear-gradient(135deg, #40B040, #FFD700, #50C050);
+    background: linear-gradient(135deg, #40B040, #47E31B, #50C050);
     border: none;
     color: #0a1a0a;
     width: 40px;
@@ -1281,7 +1281,7 @@ body {
 .quantity-input {
     width: 80px;
     padding: 0.8rem;
-    border: 2px solid rgba(255, 215, 0, 0.5);
+    border: 2px solid #ffd70080;
     border-radius: 10px;
     background: rgba(255, 255, 255, 0.1);
     color: #f8fff8;
@@ -1294,7 +1294,7 @@ body {
     margin: 0 0 1.5rem 0;
     font-weight: 700;
     font-size: 1.2rem;
-    color: #FFD700;
+    color: #47E31B;
     text-align: center;
     font-family: 'Electrolize', sans-serif;
 }
@@ -1313,13 +1313,13 @@ body {
     border-radius: 12px;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
     display: block;
-    border: 2px solid rgba(255, 215, 0, 0.4);
+    border: 2px solid #ffd70066;
     transition: all 0.3s ease;
 }
 
 .qr-container img.qr-image:hover {
     transform: scale(1.1);
-    border-color: rgba(255, 215, 0, 0.6);
+    border-color: #92E010;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
 }
 
@@ -1342,7 +1342,7 @@ body {
 }
 
 .contact-btn {
-    background: linear-gradient(135deg, #40B040, #FFD700, #50C050);
+    background: linear-gradient(135deg, #40B040, #47E31B, #50C050);
     color: #ffffff;
     padding: 0.8rem;
     border: none;
@@ -1398,7 +1398,7 @@ body {
     flex-direction: column;
     gap: 3px;
     background: linear-gradient(135deg, 
-        #40B040, #FFD700, #50C050
+        #40B040, #47E31B, #50C050
     );
     background-size: 200% 200%;
     border: none;
@@ -1426,7 +1426,7 @@ body {
 
 .mobile-toggle.active span:nth-child(1) {
     transform: rotate(45deg) translate(5px, 5px);
-    background: #FFD700;
+    background: #47E31B;
 }
 
 .mobile-toggle.active span:nth-child(2) {
@@ -1436,7 +1436,7 @@ body {
 
 .mobile-toggle.active span:nth-child(3) {
     transform: rotate(-45deg) translate(5px, -5px);
-    background: #FFD700;
+    background: #47E31B;
 }
 
 .product-floating-icon {
@@ -1447,7 +1447,7 @@ body {
     opacity: 0.8;
     animation: float 4s ease-in-out infinite;
     z-index: 3;
-    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
+    filter: drop-shadow(0 0 10px #ffd70080);
 }
 
 @media (max-width: 768px) {
@@ -1481,7 +1481,7 @@ body {
         transition: transform 0.3s ease;
         z-index: 999;
         box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
-        border-top: 2px solid rgba(255, 215, 0, 0.5);
+        border-top: 2px solid #ffd70080;
         gap: 1.5rem;
         text-align: center;
     }
@@ -1492,7 +1492,7 @@ body {
 
     .nav-link-enhanced {
         padding: 1rem 0;
-        border-bottom: 1px solid rgba(255, 215, 0, 0.25);
+        border-bottom: 1px solid #ffd70040;
         border-radius: 0;
         font-size: 1.1rem;
         width: 100%;
@@ -1659,9 +1659,9 @@ body {
 button:focus-visible,
 a:focus-visible,
 input:focus-visible {
-    outline: 2px solid #FFD700;
+    outline: 2px solid #47E31B;
     outline-offset: 2px;
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+    box-shadow: 0 0 15px #ffd70080;
 }
 
 .buy-button-enhanced:focus-visible,
@@ -1669,14 +1669,14 @@ input:focus-visible {
 .social-button-enhanced:focus-visible {
     outline: none;
     box-shadow: 
-        0 0 0 3px rgba(255, 215, 0, 0.6),
-        0 0 25px rgba(255, 215, 0, 0.7),
+        0 0 0 3px #92E010,
+        0 0 25px #ffd700b3,
         0 10px 30px rgba(50, 180, 50, 0.5);
     transform: translateY(-2px);
 }
 
 .nav-link-enhanced:focus-visible {
-    outline: 2px solid rgba(255, 215, 0, 0.8);
+    outline: 2px solid #E5FB53;
     outline-offset: 3px;
     background: rgba(255, 215, 0, 0.08);
     border-radius: 6px;
@@ -1694,7 +1694,7 @@ input:focus-visible {
 
 ::-webkit-scrollbar-thumb {
     background: linear-gradient(to bottom, 
-        #32CD32, #FFD700, #78FF78, #FFD700, #40B040
+        #32CD32, #47E31B, #78FF78, #47E31B, #40B040
     );
     border-radius: 6px;
     border: 1px solid #0f2015;
@@ -1703,9 +1703,9 @@ input:focus-visible {
 
 ::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(to bottom, 
-        #FFD700, #78FF78, #32CD32, #78FF78, #FFD700
+        #47E31B, #78FF78, #32CD32, #78FF78, #47E31B
     );
-    box-shadow: 0 0 12px rgba(255, 215, 0, 0.6);
+    box-shadow: 0 0 12px #92E010;
 }
 
 * {
@@ -1749,7 +1749,7 @@ body,
     .service-card-enhanced,
     .product-card-enhanced,
     .about-enhanced {
-        border-color: rgba(255, 215, 0, 0.7);
+        border-color: #ffd700b3;
         background: linear-gradient(145deg, 
             rgba(255, 255, 255, 0.15), 
             rgba(60, 180, 60, 0.12),
@@ -1765,15 +1765,15 @@ body,
     .product-info-enhanced h3,
     .about-title {
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-        filter: drop-shadow(0 0 3px rgba(255, 215, 0, 0.8));
+        filter: drop-shadow(0 0 3px #E5FB53);
     }
     
     .service-card-enhanced,
     .product-card-enhanced,
     .about-enhanced {
         border-width: 3px;
-        border-color: rgba(255, 215, 0, 0.9);
-        box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.6);
+        border-color: #87E06F;
+        box-shadow: 0 0 0 2px #92E010;
     }
 }
 
