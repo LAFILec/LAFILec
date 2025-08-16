@@ -309,7 +309,7 @@
 
                     <div class="qr-container">
                         <img src="PB.png" alt="Código QR para pago" class="qr-image">
-                        <p class="qr-instruction">Envía tu comprobante al finalizar con el pago a:</p>
+                        <p class="qr-instruction">Envía tu comprobante al finalizar con el pago y coordinaremos la entrega, tiempo estimado de entrega 24h.</p>
                     </div>
                     
                     <div class="contact-buttons">
