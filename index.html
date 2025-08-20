@@ -6,8 +6,15 @@
     <meta name="description" content="La Fil - Productos y servicios de calidad con tecnología avanzada. Stickers, peluches, galletas artesanales y más.">
     <meta name="keywords" content="La Fil, stickers, peluches, galletas artesanales, productos únicos, Ecuador">
     <meta name="author" content="La Fil">
-    <title>LA FIL - Productos y Servicios</title>
-    
+    <title>LA FIL - Oficial</title>
+    <link rel="icon" type="image/png" href="LF2.png">
+    <link rel="apple-touch-icon" href="LF2.png">
+    <meta property="og:title" content="LA FIL - Vive la Música | Productos Únicos">
+    <meta property="og:description" content="Descubre productos y servicios con esencia, creados para detener el tiempo y tocar el alma.">
+    <meta property="og:image" content="LF2.png">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="preload" href="LF2.png" as="image" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=Electrolize:wght@400&display=swap" rel="stylesheet">
@@ -20,9 +27,9 @@
 
     <header class="header-enhanced">
         <nav class="nav-container">
-            <a href="https://lafilec.github.io/LAFILec/" class="logo-enhanced">
+            <a href="https://lafilec.github.io/LAFILec/" class="logo-enhanced" aria-label="LA FIL - Inicio">
                 <div class="logo-container">
-                    <img src="lafil.png" alt="LA FIL Logo - Vive la música" class="logo-image" width="60" height="60">
+                    <img src="lafil.png" alt="LA FIL Logo - Vive la música" class="logo-image" width="60" height="60" loading="eager">
                     <span class="logo-text">Vive la música</span>
                 </div>
                 <div class="logo-glow"></div>
@@ -63,7 +70,10 @@
         </div>
         <div class="hero-content-enhanced">
             <div class="hero-title-container">
-                <h1 class="hero-title">LA FIL</h1>
+                <div class="hero-logo-container">
+                    <img src="lafil.png" alt="LA FIL" class="hero-logo-image" width="200" height="200" loading="eager">
+                    <div class="logo-interactive-glow"></div>
+                </div>
                 <div class="title-underline"></div>
             </div>
             <p class="hero-subtitle">Descubre productos y servicios con esencia, creados para detener el tiempo y tocar el alma.</p>
@@ -85,14 +95,14 @@
             </div>
             <div class="services-grid-enhanced">
                 <div class="service-card-enhanced" data-service="vocal">
-                    <img src="afiche.jpeg" alt="Voz Escénica" class="service-image">
+                    <img src="proximo.png" alt="Voz Escénica - Evento musical" class="service-image" loading="lazy">
                     <div class="service-glow"></div>
                 </div>
                 <div class="service-card-enhanced" data-service="souvenirs">
                     <h3>Programa de Mano</h3>
-                    <p>Disponible muy pronto</p>
-                    <a href="Music.pdf" class="service-pdf-btn" target="_blank" rel="noopener">
-                        <svg class="pdf-icon" viewBox="0 0 24 24" width="16" height="16">
+                    <p>Un espacio que reúne nuestra historia, los ensambles y las voces que dan vida a cada presentación.</p>
+                    <a href="PdM_LFec.pdf" class="service-pdf-btn" target="_blank" rel="noopener" aria-label="Descargar programa en PDF">
+                        <svg class="pdf-icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
                             <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
                         </svg>
                         Archivo PDF
@@ -100,9 +110,7 @@
                     <div class="service-glow"></div>
                 </div>
                 <div class="service-card-enhanced" data-service="pause">
-                    <h3>Souvenirs Vivos</h3>
-                    <p>Productos con alma, cargados de historia, diseñados para perdurar.</p>
-                    <p>Interpretaciones vocales en vivo para conciertos, eventos y montajes artísticos.</p>
+                    <img src="afiche.png" alt="Voz Escénica - Evento musical" class="service-image" loading="lazy">
                     <div class="service-glow"></div>
                 </div>
             </div>
@@ -210,15 +218,15 @@
             <div class="footer-section-enhanced">
                 <h3>Contacto</h3>
                 <div class="contact-item">
-                    <span class="contact-icon">✉️</span>
+                    <span class="contact-icon" aria-hidden="true">✉️</span>
                     <span class="contact-text">lafilec01@gmail.com</span>
                 </div>
                 <div class="contact-item">
-                    <span class="contact-icon">☎️</span>
+                    <span class="contact-icon" aria-hidden="true">☎️</span>
                     <span class="contact-text">+593 998770378</span>
                 </div>
                 <div class="contact-item">
-                    <span class="contact-icon">📍</span>
+                    <span class="contact-icon" aria-hidden="true">📍</span>
                     <span class="contact-text">Vía Nayón, Quito - Ecuador</span>
                 </div>
             </div>
