@@ -9,7 +9,7 @@
     const frameTime = 1000 / FPS;
 
     const config = {
-        count: window.innerWidth < 768 ? 8 : 15
+        count: window.innerWidth < 768 ? 6 : 12
     };
 
     function rand(min, max) {
@@ -31,17 +31,17 @@
         reset() {
             this.x = rand(-20, window.innerWidth + 20);
             this.y = window.innerHeight + 20;
-            this.speed = rand(0.8, 2.2);
-            this.size = rand(1.5, 3);
-            this.opacity = rand(0.3, 0.7);
-            this.hue = rand(45, 65);
-            this.shimmer = rand(0.1, 0.3);
+            this.speed = rand(0.6, 1.8);
+            this.size = rand(1.2, 2.5);
+            this.opacity = rand(0.25, 0.6);
+            this.hue = rand(85, 120); 
+            this.shimmer = rand(0.08, 0.25);
         }
 
         update() {
             this.y -= this.speed;
-            this.hueShift += 0.5;
-            this.pulsePhase += 0.02;
+            this.hueShift += 0.3;
+            this.pulsePhase += 0.015;
             
             if (this.y < -30) {
                 this.reset();
@@ -51,20 +51,20 @@
         draw(ctx) {
             ctx.save();
             
-            const pulse = Math.sin(this.pulsePhase) * 0.3 + 0.7;
-            const currentOpacity = this.opacity * pulse;
-            const currentSize = this.size * (0.8 + pulse * 0.4);
-            const currentHue = (this.hue + Math.sin(this.hueShift * 0.01) * 15) % 360;
+            const pulse = Math.sin(this.pulsePhase) * 0.25 + 0.75;
+            const currentOpacity = this.opacity * pulse * 0.8;
+            const currentSize = this.size * (0.85 + pulse * 0.3);
+            const currentHue = (this.hue + Math.sin(this.hueShift * 0.008) * 10) % 360;
             
             ctx.globalAlpha = currentOpacity;
-            ctx.fillStyle = `hsl(${currentHue}, 80%, 65%)`;
-            ctx.shadowBlur = 6;
-            ctx.shadowColor = `hsl(${currentHue}, 90%, 75%)`;
+            ctx.fillStyle = `hsl(${currentHue}, 65%, 60%)`;
+            ctx.shadowBlur = 4;
+            ctx.shadowColor = `hsl(${currentHue}, 75%, 70%)`;
             
             const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, currentSize);
-            gradient.addColorStop(0, `hsl(${currentHue}, 80%, 75%)`);
-            gradient.addColorStop(0.7, `hsl(${currentHue}, 70%, 60%)`);
-            gradient.addColorStop(1, `hsla(${currentHue}, 60%, 50%, 0)`);
+            gradient.addColorStop(0, `hsl(${currentHue}, 70%, 70%)`);
+            gradient.addColorStop(0.6, `hsl(${currentHue}, 60%, 55%)`);
+            gradient.addColorStop(1, `hsla(${currentHue}, 50%, 45%, 0)`);
             
             ctx.fillStyle = gradient;
             ctx.beginPath();
@@ -95,7 +95,7 @@
         function resize() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            const newCount = window.innerWidth < 768 ? 8 : 15;
+            const newCount = window.innerWidth < 768 ? 6 : 12;
             if (particles.length !== newCount) {
                 particles.length = 0;
                 for (let i = 0; i < newCount; i++) {
@@ -104,7 +104,7 @@
             }
         }
         resize();
-        window.addEventListener('resize', resize);
+        window.addEventListener('resize', resize, { passive: true });
 
         for (let i = 0; i < config.count; i++) {
             particles.push(new Particle());
@@ -148,7 +148,7 @@
                 const isActive = toggle.classList.toggle('active');
                 menu.classList.toggle('active');
                 toggle.setAttribute('aria-expanded', isActive.toString());
-            });
+            }, { passive: false });
         }
 
         function handleNavClick(e) {
@@ -194,10 +194,63 @@
                 behavior: 'smooth'
             });
 
-            if (typeof closeMobileMenu === 'function') closeMobileMenu();
+            closeMobileMenu();
         }
 
-        document.addEventListener('click', handleNavClick);
+        document.addEventListener('click', handleNavClick, { passive: false });
+    }
+
+    function initHeroLogoInteraction() {
+        const heroLogo = document.querySelector('.hero-logo-container');
+        if (!heroLogo) return;
+
+        let clickCount = 0;
+        const maxClicks = 3;
+        const resetTime = 2000;
+        let resetTimeout;
+
+        heroLogo.addEventListener('click', (e) => {
+            e.preventDefault();
+            clickCount++;
+
+            const logoImg = heroLogo.querySelector('.hero-logo-image');
+            if (logoImg) {
+                logoImg.style.animation = 'none';
+                logoImg.offsetHeight; 
+                
+                if (clickCount === 1) {
+                    logoImg.style.animation = 'glow 1s ease-in-out';
+                    showNotif('¡LA FIL te saluda!', 'info', 2000);
+                } else if (clickCount === 2) {
+                    logoImg.style.animation = 'float 2s ease-in-out';
+                    showNotif('¡Vive la música con nosotros!', 'info', 2500);
+                } else if (clickCount >= maxClicks) {
+                    logoImg.style.animation = 'glow 0.5s ease-in-out 3';
+                    showNotif('🎵 ¡Gracias por tu energía! Explora nuestros productos', 'info', 3000);
+                    clickCount = 0;
+                }
+            }
+
+            clearTimeout(resetTimeout);
+            resetTimeout = setTimeout(() => {
+                clickCount = 0;
+            }, resetTime);
+        }, { passive: false });
+        heroLogo.addEventListener('mouseenter', () => {
+            const glow = heroLogo.querySelector('.logo-interactive-glow');
+            if (glow) {
+                glow.style.opacity = '1';
+                glow.style.transform = 'scale(1.1)';
+            }
+        }, { passive: true });
+
+        heroLogo.addEventListener('mouseleave', () => {
+            const glow = heroLogo.querySelector('.logo-interactive-glow');
+            if (glow) {
+                glow.style.opacity = '0.7';
+                glow.style.transform = 'scale(1)';
+            }
+        }, { passive: true });
     }
 
     function initEffects() {
@@ -225,29 +278,29 @@
                 card.addEventListener('mouseenter', () => {
                     clearTimeout(hoverTimeout);
                     card.classList.add('hover-active');
-                    card.style.filter = 'brightness(1.1) saturate(1.2)';
-                });
+                    card.style.filter = 'brightness(1.08) saturate(1.15)';
+                }, { passive: true });
                 
                 card.addEventListener('mouseleave', () => {
                     card.classList.remove('hover-active');
                     hoverTimeout = setTimeout(() => {
                         card.style.filter = '';
                     }, 300);
-                });
+                }, { passive: true });
             });
 
             buttons.forEach(btn => {
                 btn.addEventListener('mouseenter', () => {
                     btn.classList.add('hover-active');
-                    btn.style.filter = 'brightness(1.15) saturate(1.3)';
-                });
+                    btn.style.filter = 'brightness(1.1) saturate(1.2)';
+                }, { passive: true });
                 
                 btn.addEventListener('mouseleave', () => {
                     btn.classList.remove('hover-active');
                     setTimeout(() => {
                         btn.style.filter = '';
                     }, 300);
-                });
+                }, { passive: true });
             });
         }
     }
@@ -289,11 +342,14 @@
             
             const modal = document.createElement('div');
             modal.className = 'purchase-modal';
+            modal.setAttribute('role', 'dialog');
+            modal.setAttribute('aria-modal', 'true');
+            modal.setAttribute('aria-labelledby', 'modal-title');
             modal.innerHTML = `
                 <div class="modal-content">
                     <button class="modal-close" aria-label="Cerrar modal">&times;</button>
                     <div class="product-info">
-                        <h3>${prodName}</h3>
+                        <h3 id="modal-title">${prodName}</h3>
                         <div class="product-price">${price.toFixed(2)}</div>
                     </div>
                     
@@ -308,19 +364,19 @@
                     </div>
 
                     <div class="qr-container">
-                        <img src="PB.png" alt="Código QR para pago" class="qr-image">
+                        <img src="PB.png" alt="Código QR para pago" class="qr-image" loading="lazy">
                         <p class="qr-instruction">Envía tu comprobante al finalizar con el pago y coordinaremos la entrega, tiempo estimado de entrega 24h.</p>
                     </div>
                     
                     <div class="contact-buttons">
-                        <a href="https://wa.me/593991389252" class="contact-btn whatsapp" target="_blank" rel="noopener">
-                            <svg class="contact-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                        <a href="https://wa.me/593991389252" class="contact-btn whatsapp" target="_blank" rel="noopener" aria-label="Contactar por WhatsApp">
+                            <svg class="contact-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" aria-hidden="true">
                                 <path fill="currentColor" d="M380.9 97.1C339 55.1 283.2 32 224 32 100.3 32 0 132.3 0 256c0 45.3 12 89.2 34.9 127.3L0 480l99.4-34.6C135.1 469.4 179 480 224 480c123.7 0 224-100.3 224-224 0-59.2-23.1-115-67.1-158.9zM224 438.5c-41.1 0-81.2-11.1-116.1-32.1l-8.3-5-59 20 19.5-60.7-5.4-8.7C36.7 316.4 24 286.7 24 256c0-110.3 89.7-200 200-200 53.4 0 103.6 20.8 141.4 58.6 37.8 37.8 58.6 88 58.6 141.4 0 110.3-89.7 200-200 200zm101.6-138.5c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.4 2.8-3.6 5.5-14.2 18-17.4 21.6-3.2 3.6-6.4 4.1-11.9 1.4-5.5-2.8-23.1-8.5-44-27-16.3-14.6-27.4-32.7-30.6-38.2-3.2-5.5-.3-8.5 2.4-11.3 2.5-2.5 5.5-6.4 8.2-9.6 2.7-3.2 3.6-5.5 5.5-9.1 1.8-3.6.9-6.8-.5-9.6-1.4-2.8-12.4-29.9-17-40.9-4.5-10.8-9.1-9.3-12.4-9.5-3.2-.2-6.8-.2-10.4-.2s-9.6 1.4-14.6 6.8c-5 5.5-19.1 18.7-19.1 45.5s19.6 52.7 22.4 56.3c2.8 3.6 38.5 58.7 93.2 82.3 54.7 23.6 54.7 15.8 64.6 14.8 9.9-.9 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.4-2.5-5-4-10.5-6.8z"/>
                             </svg>
                         </a>
 
-                        <a href="mailto:lafilec01@gmail.com" class="contact-btn email">
-                            <svg class="contact-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                        <a href="mailto:lafilec01@gmail.com" class="contact-btn email" aria-label="Contactar por email">
+                            <svg class="contact-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" aria-hidden="true">
                                 <path fill="currentColor" d="M502.3 190.8L327.4 338c-15.1 12.9-37.7 12.9-52.8 0L9.7 190.8C3.9 185.7 0 178.3 0 170.4v-20.5c0-21.3 17.2-38.5 38.5-38.5h435c21.3 0 38.5 17.2 38.5 38.5v20.5c0 7.9-3.9 15.3-9.7 20.4zM0 213.3V416c0 21.3 17.2 38.5 38.5 38.5h435c21.3 0 38.5-17.2 38.5-38.5V213.3L327.4 360.4c-15.1 12.9-37.7 12.9-52.8 0L0 213.3z"/>
                             </svg>
                         </a>
@@ -330,6 +386,8 @@
             
             document.body.appendChild(modal);
             document.body.style.overflow = 'hidden';
+            const firstFocusable = modal.querySelector('.modal-close');
+            if (firstFocusable) firstFocusable.focus();
             
             requestAnimationFrame(() => {
                 modal.classList.add('show');
@@ -407,9 +465,11 @@
 
         const notif = document.createElement('div');
         notif.className = 'notification';
+        notif.setAttribute('role', 'alert');
+        notif.setAttribute('aria-live', 'polite');
         notif.innerHTML = `
             <div class="notification-content ${type}">
-                <span class="notification-icon">${type === 'error' ? '❌' : '✅'}</span>
+                <span class="notification-icon" aria-hidden="true">${type === 'error' ? '❌' : '✅'}</span>
                 <span class="notification-text">${message}</span>
             </div>
         `;
@@ -488,22 +548,9 @@
     }
 
     function initAnimations() {
-        const heroTitle = document.querySelector('.hero-title');
         const logoText = document.querySelector('.logo-text');
         const serviceCards = document.querySelectorAll('.service-card-enhanced');
         const productCards = document.querySelectorAll('.product-card-enhanced');
-
-        if (heroTitle) {
-            heroTitle.addEventListener('mouseenter', () => {
-                heroTitle.style.transform = 'scale(1.02)';
-                heroTitle.style.filter = 'drop-shadow(0 0 40px rgba(255, 215, 0, 0.8))';
-            });
-            
-            heroTitle.addEventListener('mouseleave', () => {
-                heroTitle.style.transform = '';
-                heroTitle.style.filter = '';
-            });
-        }
 
         if (logoText) {
             logoText.addEventListener('click', (e) => {
@@ -515,21 +562,23 @@
         }
 
         serviceCards.forEach((card, index) => {
-            card.style.animationDelay = `${index * 0.2}s`;
+            card.style.animationDelay = `${index * 0.15}s`;
             
-            card.addEventListener('mouseenter', () => {
-                card.style.transform = 'translateY(-12px) scale(1.03) rotateX(5deg)';
-                card.style.boxShadow = '0 20px 60px rgba(0, 0, 0, 0.4), 0 0 30px rgba(255, 215, 0, 0.3)';
-            });
-            
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = '';
-                card.style.boxShadow = '';
-            });
+            if (!isMobile()) {
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'translateY(-10px) scale(1.02)';
+                    card.style.boxShadow = '0 18px 50px rgba(14, 10, 43, 0.4), 0 0 25px rgba(229, 248, 83, 0.12)';
+                }, { passive: true });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = '';
+                    card.style.boxShadow = '';
+                }, { passive: true });
+            }
         });
 
         productCards.forEach((card, index) => {
-            card.style.animationDelay = `${index * 0.15}s`;
+            card.style.animationDelay = `${index * 0.12}s`;
         });
     }
 
@@ -548,11 +597,13 @@
                 }
                 
                 if (currentScrollY > 50) {
-                    header.style.background = 'linear-gradient(135deg, rgba(45, 100, 45, 0.98) 0%, rgba(55, 120, 55, 0.98) 50%, rgba(35, 80, 35, 0.98) 100%)';
+                    header.style.background = 'linear-gradient(135deg, rgba(14, 10, 43, 0.98) 0%, rgba(61, 151, 94, 0.95) 50%, rgba(14, 10, 43, 0.98) 100%)';
                     header.style.backdropFilter = 'blur(25px)';
+                    header.style.borderBottomColor = 'rgba(229, 248, 83, 0.8)';
                 } else {
                     header.style.background = '';
                     header.style.backdropFilter = '';
+                    header.style.borderBottomColor = '';
                 }
             }
             
@@ -568,7 +619,34 @@
                 });
                 ticking = true;
             }
+        }, { passive: true });
+    }
+
+    function preloadImages() {
+        const criticalImages = [
+            'lafil.png',
+            'PB.png'
+        ];
+
+        criticalImages.forEach(src => {
+            const img = new Image();
+            img.loading = 'eager';
+            img.src = src;
         });
+    }
+
+    function optimizePerformance() {
+        if (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) {
+            config.count = Math.floor(config.count * 0.7);
+        }
+
+        if (navigator.getBattery) {
+            navigator.getBattery().then(battery => {
+                if (!battery.charging && battery.level < 0.2) {
+                    document.documentElement.style.setProperty('--reduce-motion', '1');
+                }
+            });
+        }
     }
 
     function init() {
@@ -576,8 +654,11 @@
         isInit = true;
 
         try {
+            optimizePerformance();
+            preloadImages();
             initParticles();
             initNav();
+            initHeroLogoInteraction();
             initEffects();
             initObserver();
             initPurchase();
@@ -585,7 +666,7 @@
             addScrollEffects();
             
             setTimeout(() => {
-                showNotif('¡Bienvenid@s! Explora nuestros productos', 'info', 4000);
+                showNotif('¡Bienvenid@s! Explora nuestra música y productos únicos', 'info', 4000);
             }, 1500);
             
         } catch (error) {
@@ -601,7 +682,7 @@
     }
 
     window.addEventListener('beforeunload', cleanup);
-    window.addEventListener('visibilitychange', handleVisibility);
+    window.addEventListener('visibilitychange', handleVisibility, { passive: true });
     window.addEventListener('unload', () => {
         cleanup();
         isInit = false;
@@ -609,7 +690,12 @@
 
     const headerEl = document.querySelector('.header-enhanced');
     if (headerEl) {
-        document.documentElement.style.setProperty('--header-height', `${Math.ceil(headerEl.getBoundingClientRect().height)}px`);
+        const resizeObserver = new ResizeObserver(entries => {
+            for (let entry of entries) {
+                document.documentElement.style.setProperty('--header-height', `${Math.ceil(entry.contentRect.height)}px`);
+            }
+        });
+        resizeObserver.observe(headerEl);
     }
 
 })();
