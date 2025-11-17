@@ -2,22 +2,43 @@
     'use strict';
 
     let particles = [];
+    let snowflakes = [];
     let animId = null;
+    let snowAnimId = null;
     let isInit = false;
     let lastTime = 0;
     const FPS = 60;
     const frameTime = 1000 / FPS;
 
     const config = {
-        count: window.innerWidth < 768 ? 6 : 12
+        count: window.innerWidth < 768 ? 6 : 12,
+        snowCount: window.innerWidth < 768 ? 25 : 50
     };
+    const isMobile = window.innerWidth <= 768;
+    const isSmallMobile = window.innerWidth <= 480;
+    
+    const TOTAL_PARTICLES_TREE = isSmallMobile ? 50 : (isMobile ? 80 : 120);
+    const TOTAL_LIGHTS = isSmallMobile ? 18 : (isMobile ? 25 : 35);
+    const ANIMATION_TIME = 8000;
 
     function rand(min, max) {
         return Math.random() * (max - min) + min;
     }
 
-    function isMobile() {
+    function isMobileDevice() {
         return window.innerWidth <= 768;
+    }
+
+    function toRadians(degrees) {
+        return degrees * (Math.PI / 180);
+    }
+
+    function sin(degrees) {
+        return Math.sin(toRadians(degrees));
+    }
+
+    function cos(degrees) {
+        return Math.cos(toRadians(degrees));
     }
 
     class Particle {
@@ -75,6 +96,77 @@
         }
     }
 
+    class Snowflake {
+        constructor() {
+            this.reset();
+            this.y = rand(-50, window.innerHeight);
+        }
+
+        reset() {
+            this.x = rand(0, window.innerWidth);
+            this.y = -10;
+            this.size = rand(1.5, 3.5);
+            this.speed = rand(0.3, 0.8);
+            this.drift = rand(-0.3, 0.3);
+            this.opacity = rand(0.4, 0.8);
+            this.rotation = rand(0, Math.PI * 2);
+            this.rotationSpeed = rand(-0.01, 0.01);
+        }
+
+        update() {
+            this.y += this.speed;
+            this.x += this.drift;
+            this.rotation += this.rotationSpeed;
+            
+            if (this.y > window.innerHeight + 10) {
+                this.reset();
+            }
+            
+            if (this.x < -10) {
+                this.x = window.innerWidth + 10;
+            } else if (this.x > window.innerWidth + 10) {
+                this.x = -10;
+            }
+        }
+
+        draw(ctx) {
+            ctx.save();
+            ctx.translate(this.x, this.y);
+            ctx.rotate(this.rotation);
+            ctx.globalAlpha = this.opacity;
+            
+            const gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, this.size);
+            gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
+            gradient.addColorStop(0.4, 'rgba(240, 248, 255, 0.9)');
+            gradient.addColorStop(0.7, 'rgba(230, 240, 255, 0.6)');
+            gradient.addColorStop(1, 'rgba(220, 235, 255, 0)');
+            
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            
+            for (let i = 0; i < 6; i++) {
+                const angle = (Math.PI / 3) * i;
+                const x = Math.cos(angle) * this.size;
+                const y = Math.sin(angle) * this.size;
+                
+                if (i === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            }
+            
+            ctx.closePath();
+            ctx.fill();
+            
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.6)';
+            ctx.lineWidth = 0.3;
+            ctx.stroke();
+            
+            ctx.restore();
+        }
+    }
+
     function initParticles() {
         const canvas = document.createElement('canvas');
         canvas.id = 'particle-canvas';
@@ -126,6 +218,154 @@
             animId = requestAnimationFrame(animate);
         }
         animate(0);
+    }
+
+    function initSnowflakes() {
+        const canvas = document.getElementById('snowflakes-canvas');
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d', { alpha: true, desynchronized: true });
+        
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            const newSnowCount = window.innerWidth < 768 ? 25 : 50;
+            if (snowflakes.length !== newSnowCount) {
+                snowflakes.length = 0;
+                for (let i = 0; i < newSnowCount; i++) {
+                    snowflakes.push(new Snowflake());
+                }
+            }
+        }
+        resize();
+        window.addEventListener('resize', resize, { passive: true });
+
+        for (let i = 0; i < config.snowCount; i++) {
+            snowflakes.push(new Snowflake());
+        }
+
+        let lastSnowTime = 0;
+        function animateSnow(currentTime) {
+            if (currentTime - lastSnowTime >= frameTime) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                for (let i = 0; i < snowflakes.length; i++) {
+                    const flake = snowflakes[i];
+                    flake.update();
+                    flake.draw(ctx);
+                }
+                lastSnowTime = currentTime;
+            }
+            snowAnimId = requestAnimationFrame(animateSnow);
+        }
+        animateSnow(0);
+    }
+
+    function startCountdown() {
+        const daysEl = document.getElementById('days');
+        const hoursEl = document.getElementById('hours');
+        const minutesEl = document.getElementById('minutes');
+        const secondsEl = document.getElementById('seconds');
+
+        if (!daysEl || !hoursEl || !minutesEl || !secondsEl) {
+            return;
+        }
+
+        function updateCountdown() {
+            const now = new Date();
+            const christmas = new Date(2025, 11, 25, 0, 0, 0);
+            
+            const totalMs = christmas - now;
+
+            if (totalMs <= 0) {
+                daysEl.textContent = '00';
+                hoursEl.textContent = '00';
+                minutesEl.textContent = '00';
+                secondsEl.textContent = '00';
+                return;
+            }
+
+            const days = String(Math.floor(totalMs / (1000 * 60 * 60 * 24))).padStart(2, '0');
+            const hours = String(Math.floor((totalMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+            const minutes = String(Math.floor((totalMs % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+            const seconds = String(Math.floor((totalMs % (1000 * 60)) / 1000)).padStart(2, '0');
+
+            daysEl.textContent = days;
+            hoursEl.textContent = hours;
+            minutesEl.textContent = minutes;
+            secondsEl.textContent = seconds;
+        }
+
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    }
+
+    function createLights() {
+        const lightsContainer = document.getElementById('lights-container');
+        
+        if (!lightsContainer) {
+            return;
+        }
+
+        for (let l = 0; l < TOTAL_LIGHTS; l++) {
+            const light = document.createElement('div');
+            light.className = 'tree__light';
+            
+            const rotate = (1440 / TOTAL_LIGHTS) * (TOTAL_LIGHTS - l);
+            const radius = (12.5 / TOTAL_LIGHTS) * (TOTAL_LIGHTS - l);
+            const y = (100 / TOTAL_LIGHTS) * l;
+            const speed = Math.random() * 10;
+            const delay = Math.random() * -10;
+            const appear = l;
+            
+            light.style.setProperty('--rotate', rotate);
+            light.style.setProperty('--radius', radius);
+            light.style.setProperty('--y', y);
+            light.style.setProperty('--speed', speed);
+            light.style.setProperty('--delay', delay);
+            light.style.setProperty('--appear', appear);
+            
+            lightsContainer.appendChild(light);
+        }
+    }
+
+    function createTreeParticles() {
+        const particlesContainer = document.getElementById('particles-tree');
+        
+        if (!particlesContainer) {
+            return;
+        }
+
+        for (let i = 1; i <= TOTAL_PARTICLES_TREE; i++) {
+            const particle = document.createElement('li');
+            
+            const t = (6 * 360 * i) / TOTAL_PARTICLES_TREE;
+            const rotation = (sin(t) + cos(t / 3) * 0.1) * 20;
+            
+            particle.style.transform = `rotate(${rotation}deg)`;
+            
+            const delay = (-i) * (0.5 * ANIMATION_TIME / TOTAL_PARTICLES_TREE);
+            particle.style.setProperty('--animation-delay', `${delay}ms`);
+            
+            particlesContainer.appendChild(particle);
+        }
+    }
+
+    function applyTreeAnimationDelays() {
+        const particles = document.querySelectorAll('.particles-tree li');
+        
+        particles.forEach((particle, index) => {
+            const delay = (-index - 1) * (0.5 * ANIMATION_TIME / TOTAL_PARTICLES_TREE);
+            
+            const styleSheet = document.createElement('style');
+            styleSheet.textContent = `
+                .particles-tree li:nth-child(${index + 1})::before,
+                .particles-tree li:nth-child(${index + 1})::after {
+                    animation-delay: ${delay}ms;
+                }
+            `;
+            document.head.appendChild(styleSheet);
+        });
     }
 
     function closeMobileMenu() {
@@ -236,6 +476,7 @@
                 clickCount = 0;
             }, resetTime);
         }, { passive: false });
+
         heroLogo.addEventListener('mouseenter', () => {
             const glow = heroLogo.querySelector('.logo-interactive-glow');
             if (glow) {
@@ -257,7 +498,7 @@
         const cards = document.querySelectorAll('.service-card-enhanced, .product-card-enhanced');
         const buttons = document.querySelectorAll('.buy-button-enhanced, .cta-button-enhanced, .social-button-enhanced');
 
-        if (isMobile()) {
+        if (isMobileDevice()) {
             cards.forEach(card => {
                 card.addEventListener('touchstart', () => {
                     card.classList.add('touch-active');
@@ -506,12 +747,18 @@
             animId = null;
         }
         
+        if (snowAnimId) {
+            cancelAnimationFrame(snowAnimId);
+            snowAnimId = null;
+        }
+        
         const canvas = document.getElementById('particle-canvas');
         if (canvas && canvas.parentNode) {
             canvas.parentNode.removeChild(canvas);
         }
         
         particles.length = 0;
+        snowflakes.length = 0;
     }
 
     function handleVisibility() {
@@ -519,6 +766,10 @@
             if (animId) {
                 cancelAnimationFrame(animId);
                 animId = null;
+            }
+            if (snowAnimId) {
+                cancelAnimationFrame(snowAnimId);
+                snowAnimId = null;
             }
         } else {
             if (!animId && isInit) {
@@ -544,6 +795,28 @@
                     animate(0);
                 }
             }
+            
+            if (!snowAnimId && isInit) {
+                const snowCanvas = document.getElementById('snowflakes-canvas');
+                if (snowCanvas) {
+                    const ctx = snowCanvas.getContext('2d');
+                    let lastSnowTime = 0;
+                    function animateSnow(currentTime) {
+                        if (currentTime - lastSnowTime >= frameTime) {
+                            ctx.clearRect(0, 0, snowCanvas.width, snowCanvas.height);
+                            
+                            for (let i = 0; i < snowflakes.length; i++) {
+                                const flake = snowflakes[i];
+                                flake.update();
+                                flake.draw(ctx);
+                            }
+                            lastSnowTime = currentTime;
+                        }
+                        snowAnimId = requestAnimationFrame(animateSnow);
+                    }
+                    animateSnow(0);
+                }
+            }
         }
     }
 
@@ -564,7 +837,7 @@
         serviceCards.forEach((card, index) => {
             card.style.animationDelay = `${index * 0.15}s`;
             
-            if (!isMobile()) {
+            if (!isMobileDevice()) {
                 card.addEventListener('mouseenter', () => {
                     card.style.transform = 'translateY(-10px) scale(1.02)';
                     card.style.boxShadow = '0 18px 50px rgba(14, 10, 43, 0.4), 0 0 25px rgba(229, 248, 83, 0.12)';
@@ -638,6 +911,7 @@
     function optimizePerformance() {
         if (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) {
             config.count = Math.floor(config.count * 0.7);
+            config.snowCount = Math.floor(config.snowCount * 0.7);
         }
 
         if (navigator.getBattery) {
@@ -657,6 +931,7 @@
             optimizePerformance();
             preloadImages();
             initParticles();
+            initSnowflakes();
             initNav();
             initHeroLogoInteraction();
             initEffects();
@@ -664,9 +939,12 @@
             initPurchase();
             initAnimations();
             addScrollEffects();
-            
+            startCountdown();
+            createLights();
+            createTreeParticles();
+            applyTreeAnimationDelays();
             setTimeout(() => {
-                showNotif('¡Bienvenid@s! Explora nuestra música y productos únicos', 'info', 4000);
+                showNotif('🎄 ¡Felices fiestas! Explora nuestra música y productos únicos', 'info', 4000);
             }, 1500);
             
         } catch (error) {
@@ -687,7 +965,6 @@
         cleanup();
         isInit = false;
     });
-
     const headerEl = document.querySelector('.header-enhanced');
     if (headerEl) {
         const resizeObserver = new ResizeObserver(entries => {
@@ -697,5 +974,19 @@
         });
         resizeObserver.observe(headerEl);
     }
+
+    window.toggleParticles = function() {
+        const particles = document.getElementById('particles-tree');
+        if (particles) {
+            particles.style.display = particles.style.display === 'none' ? 'block' : 'none';
+        }
+    };
+
+    window.toggleLights = function() {
+        const lights = document.getElementById('lights-container');
+        if (lights) {
+            lights.style.display = lights.style.display === 'none' ? 'block' : 'none';
+        }
+    };
 
 })();
