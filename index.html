@@ -24,6 +24,7 @@
 
 <body>
     <div class="particles" id="particles"></div>
+    <canvas id="snowflakes-canvas"></canvas>
 
     <header class="header-enhanced">
         <nav class="nav-container">
@@ -49,6 +50,7 @@
                         <span class="button-icon">💰</span>
                         <span class="button-text">Crowdfunding</span>
                         <div class="button-shine"></div>
+                        <div class="snow-accumulation"></div>
                     </a>
                 </li>
                 <li>
@@ -57,6 +59,7 @@
                         <span class="button-icon">📸</span>
                         <span class="button-text">Instagram</span>
                         <div class="button-shine"></div>
+                        <div class="snow-accumulation"></div>
                     </a>
                 </li>
             </ul>
@@ -68,20 +71,68 @@
             <div class="hero-gradient"></div>
             <div class="floating-shapes"></div>
         </div>
-        <div class="hero-content-enhanced">
-            <div class="hero-title-container">
-                <div class="hero-logo-container">
-                    <img src="lafil.png" alt="LA FIL" class="hero-logo-image" width="200" height="200" loading="eager">
-                    <div class="logo-interactive-glow"></div>
+        
+        <!-- NUEVO: Hero dividido en dos columnas -->
+        <div class="hero-split-container">
+            <!-- Columna izquierda: Logo y texto -->
+            <div class="hero-content-left">
+                <div class="hero-title-container">
+                    <div class="hero-logo-container">
+                        <img src="lafil.png" alt="LA FIL" class="hero-logo-image" width="200" height="200" loading="eager">
+                        <div class="logo-interactive-glow"></div>
+                    </div>
+                    <div class="title-underline"></div>
                 </div>
-                <div class="title-underline"></div>
+                <p class="hero-subtitle">Descubre productos y servicios con esencia, creados para detener el tiempo y tocar el alma.</p>
+                <a href="#productos" class="cta-button-enhanced">
+                    <span class="cta-text">Explorar Productos</span>
+                    <span class="cta-arrow">→</span>
+                    <div class="cta-ripple"></div>
+                    <div class="snow-accumulation"></div>
+                </a>
             </div>
-            <p class="hero-subtitle">Descubre productos y servicios con esencia, creados para detener el tiempo y tocar el alma.</p>
-            <a href="#productos" class="cta-button-enhanced">
-                <span class="cta-text">Explorar Productos</span>
-                <span class="cta-arrow">→</span>
-                <div class="cta-ripple"></div>
-            </a>
+
+            <!-- Columna derecha: Árbol de Navidad animado -->
+            <div class="hero-content-right">
+                <div class="christmas-tree-wrapper">
+                    <!-- Countdown de Navidad -->
+                    <div class="countdown">
+                        <div class="countdown-timer">
+                            <div class="time-block">
+                                <span class="time-value" id="days">00</span>
+                                <span class="time-label">días</span>
+                            </div>
+                            <div class="time-block">
+                                <span class="time-value" id="hours">00</span>
+                                <span class="time-label">horas</span>
+                            </div>
+                            <div class="time-block">
+                                <span class="time-value" id="minutes">00</span>
+                                <span class="time-label">min</span>
+                            </div>
+                            <div class="time-block">
+                                <span class="time-value" id="seconds">00</span>
+                                <span class="time-label">seg</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Árbol de Navidad -->
+                    <div class="tree-container">
+                        <svg class="tree__star" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 113.32 108.44">
+                            <path d="M90.19 104.33L57.12 87.38 24.4 105l5.91-36.69L3.44 42.65l36.72-5.72 16.1-33.5L73.06 36.6l36.83 4.97-26.35 26.21z" 
+                                  fill="none" 
+                                  stroke-width="6.88" 
+                                  stroke-linecap="round" 
+                                  stroke-linejoin="round"/>
+                        </svg>
+                        
+                        <div class="tree__lights" id="lights-container"></div>
+                        
+                        <ul class="particles-tree" id="particles-tree"></ul>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -106,6 +157,7 @@
                             <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
                         </svg>
                         Archivo PDF
+                        <div class="snow-accumulation"></div>
                     </a>
                     <div class="service-glow"></div>
                 </div>
@@ -136,6 +188,7 @@
                         <a href="https://lafilec.github.io/StikerLA/" class="buy-button-enhanced no-modal">
                             <span class="button-text">Ver más</span>
                             <div class="button-glow"></div>
+                            <div class="snow-accumulation"></div>
                         </a>
                     </div>
                     <div class="product-floating-icon"></div>
@@ -153,6 +206,7 @@
                         <a href="https://lafilec.github.io/PelucheStore/" class="buy-button-enhanced no-modal">
                             <span class="button-text">Ver más</span>
                             <div class="button-glow"></div>
+                            <div class="snow-accumulation"></div>
                         </a>
                     </div>
                     <div class="product-floating-icon"></div>
@@ -170,6 +224,7 @@
                         <button class="buy-button-enhanced">
                             <span class="button-text">Comprar</span>
                             <div class="button-glow"></div>
+                            <div class="snow-accumulation"></div>
                         </button>
                     </div>
                     <div class="product-floating-icon"></div>
@@ -187,6 +242,7 @@
                         <a href="https://lafilec.github.io/Entre-l-neas/" class="buy-button-enhanced no-modal">
                             <span class="button-text">Ver más</span>
                             <div class="button-glow"></div>
+                            <div class="snow-accumulation"></div>
                         </a>
                     </div>
                     <div class="product-floating-icon"></div>
@@ -261,4 +317,3 @@
     <script src="script.js" defer></script>
 </body>
 </html>
-
