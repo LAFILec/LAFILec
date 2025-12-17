@@ -466,7 +466,7 @@
                     showNotif('¡Vive la música con nosotros!', 'info', 2500);
                 } else if (clickCount >= maxClicks) {
                     logoImg.style.animation = 'glow 0.5s ease-in-out 3';
-                    showNotif('🎵 ¡Gracias por tu energía! Explora nuestros productos', 'info', 3000);
+                    showNotif('¡Gracias por tu energía! Explora nuestros productos', 'info', 3000);
                     clickCount = 0;
                 }
             }
@@ -990,3 +990,4 @@
     };
 
 })();
+
